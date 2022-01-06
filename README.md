@@ -250,7 +250,9 @@ Now, we will begin our data analysis. One important thing to note is that this i
 Nevertheless, the aim of this tutorial is to give you a general idea of DGE RNA Seq analysis and this dataset helps achieve just that.
 Lets's begin our analysis with quality control of our raw RNA-Seq reads.
 
-### Quality Control of RNA-Seq Samples <a name="quality_control"></a>
+---------------------------------------------------
+
+### 1. Quality Control of RNA-Seq Samples <a name="quality_control"></a>
 
 Quality-related issues generally arise during sequencing or library preparation. These include: low confidence bases, PCR artifacts, sequence-specific bias, sequence contamination, untrimmed adapters, 3’/5’ positional bias.
 Running quality checks can help avoid problems that would occur during genome alignment. Few quality-related problems can be corrected. Some cannot be corrected, but being aware of them can help us interpret results cautiously.
@@ -388,31 +390,30 @@ The overrepresented sequences could be vector or adapter sequences. One can BLAS
 
 In RNA-Seq, some transcripts may be so abundant that can be listed as overrepresented sequences. Also in case of small libraries, where sequences are not subjected to random fragmentation, one sequence may account for a huge proportion of total reads.
 
-### Preprocessing of RNA-Seq samples <a name="preprocessing"></a>
+----------------------------------------------------------------
 
-After conducting quality checks, multiple pre-processing steps can be conducted to mitigate some of the quality problems that arose during the experimental setup. This assists in better alignment of the reads to the genome.
+### 2. Preprocessing of RNA-Seq samples <a name="preprocessing"></a>
+
+After conducting quality checks, multiple pre-processing steps can be conducted to mitigate some of the quality problems that arose during the experimental setup. 
+This assists in better alignment of the reads to the genome.
+
 These steps include:
-• Filtering: You can filter reads based on their quality. Average read quality is calculated and if it falls below the user-defined threshold that read is dropped from further analysis. In case of Paired End reads, if the mean quality of either of the reads drops below the given threshold, the read pair is dropped from further analysis.
-
-• Trimming: Instead of dropping entire reads or read pairs from further analysis, you can trim low quality bases from a given read. There are several ways to trim a read:
-     -Trimming from either end: Starting from either 3’ or 5’ end, bases are trimmed if their quality falls below the user-defined threshold. If the trimmed reads fall below a user-defined length, they can be filtered.
-     
-     -Trimming using a sliding window approach: Instead of examining the quality of one base at a time, you can define a length of a search window and examine the mean quality of bases in that window. If the mean quality is above the given threshold, the window slides further to examine the next set of bases.
-                                                Sliding the window from the 5′ end keeps the beginning of the read until the quality falls below the defined threshold, while sliding from the 3′ end cuts until it reaches a window with good enough quality. The window size is an essential parameter that needs to be tuned; very small window size may lead to a stringent check and lead to loss of reads.
-     
-     -Trimming by sum method: This is also known as BWA quality trimming. The read is scanned from the 3’ end, the quality of each base is compared to the user defined threshold and the difference is summed up. The read is trimmed at the point where the ‘summed up difference’ is the highest.
-
-• Removal of Ambiguous Bases: If a base is not identified during sequencing, it is indicated as a N. Higher number of Ns in the read should be removed to avoid false mapping and incorrect transcriptome assemblies.
-
-• Removal of Adapters: Adapters are short, known sequences of oligonucleotides that are used to extract or fish out DNA sequences of interest. Other tags such as primers and multiplexing identifiers may also be attached to the reads.
-These need to be removed prior to further analysis. However, removal of adapter content can present several hurdles.
-Like any other part of the read, these tags can undergo sequencing errors like mismatches, indels and ambiguous bases. When sequencing small-RNAs, reads can run into a ‘read-through’ situation where the reads extend into the adapter and 3’ end adapter can be partial.
+* **Filtering**: You can filter reads based on their quality. Average read quality is calculated and if it falls below the user-defined threshold that read is dropped from further analysis. In case of Paired End reads, if the mean quality of either of the reads drops below the given threshold, the read pair is dropped from further analysis.
+* **Trimming**: Instead of dropping entire reads or read pairs from further analysis, you can trim low quality bases from a given read. There are several ways to trim a read:
+   * <u>Trimming from either end</u>: Starting from either 3’ or 5’ end, bases are trimmed if their quality falls below the user-defined threshold. If the trimmed reads fall below a user-defined length, they can be filtered.
+   * <u>Trimming using a sliding window approach</u>: Instead of examining the quality of one base at a time, you can define a length of a search window and examine the mean quality of bases in that window. If the mean quality is above the given threshold, the window slides further to examine the next set of bases.</br>
+Sliding the window from the 5′ end keeps the beginning of the read until the quality falls below the defined threshold, while sliding from the 3′ end cuts until it reaches a window with good enough quality. 
+The window size is an essential parameter that needs to be tuned; very small window size may lead to a stringent check and lead to loss of reads.
+   * <u>Trimming by sum method</u>: This is also known as BWA quality trimming. The read is scanned from the 3’ end, the quality of each base is compared to the user defined threshold and the difference is summed up. The read is trimmed at the point where the ‘summed up difference’ is the highest.
+* **Removal of Ambiguous Bases**: If a base is not identified during sequencing, it is indicated as a N. Higher number of Ns in the read should be removed to avoid false mapping and incorrect transcriptome assemblies.
+* **Removal of Adapters**: Adapters are short, known sequences of oligonucleotides that are used to extract or fish out DNA sequences of interest. Other tags such as primers and multiplexing identifiers may also be attached to the reads.
+These need to be removed prior to further analysis. However, removal of adapter content can present several hurdles.</br>
+Like any other part of the read, these tags can undergo sequencing errors like mismatches, indels and ambiguous bases. When sequencing small-RNAs, reads can run into a ‘read-through’ situation where the reads extend into the adapter and 3’ end adapter can be partial.</br>
 Trimming tools overcome these challenges by examining the reads for known adapter content, aligning the portions of the reads that partially match these adapter sequences and then trimming the matched portions.
-
-•Examining Read Length: Read length distribution gives us an idea of how useful the reads are for further steps such as genome alignment, transcriptome assembly and detection of splice isoforms. Very short reads, resulting from trimming and adapter removal, map unambiguously to the genome and hence can be removed from further analysis.
-
+* **Examining Read Length**: Read length distribution gives us an idea of how useful the reads are for further steps such as genome alignment, transcriptome assembly and detection of splice isoforms. Very short reads, resulting from trimming and adapter removal, map unambiguously to the genome and hence can be removed from further analysis.</br>
 
 The above-mentioned steps are the most common procedures utilised for pre-processing data prior to alignment. Depending on your data quality and the QC plots, you may need to take additional steps such as cautious removal of duplicates, examining reads for possible contaminants and removing related sequences, removal of low-complexity sequences and poly A/T tails etc.
+
 Several tools are available for pre-processing the data: Trimmomatic, PRINSEQ, Cutadapt, TrimGalore, FastX, TagCleaner 
 
 In this tutorial, we will be using Trimmomatic. We have some really good quality reads in our dataset, so it is quite likely that trimming may not have a significant effect on the read quality.
@@ -426,10 +427,10 @@ TrimmomaticSE -phred33 ./data/SRR12852623.fastq  ./qc/trim_output/SRR12852623_tr
 
 ```
 In this command, the options are:
--phred 33 : indicates that base quality is given Phred33 format
--ILLUMINACLIP: TruSeq3-SE.fa:2:30:10 : it points to the FASTA file containing adapter sequences that are used in Illumina MiSeq and HiSeq protocols. It allows two mismatches in the seed, palindrome clip threshold is 30, simple clip threshold is 10
--SLIDINGWINDOW:5:20 : indicates that a sliding window of 5 bases is to be used and reads are to be trimmed if quality of the window drops below 20
--MINLEN:40 : indicates that minimum read length should be 40 after trimming
+* phred 33 : indicates that base quality is given Phred33 format
+* ILLUMINACLIP: TruSeq3-SE.fa:2:30:10 : it points to the FASTA file containing adapter sequences that are used in Illumina MiSeq and HiSeq protocols. It allows two mismatches in the seed, palindrome clip threshold is 30, simple clip threshold is 10
+* SLIDINGWINDOW:5:20 : indicates that a sliding window of 5 bases is to be used and reads are to be trimmed if quality of the window drops below 20
+* MINLEN:40 : indicates that minimum read length should be 40 after trimming
 
 You have to run the above mentioned commmand for each of your samples: SRR12852624, SRR12852625 ...etc; just replace the name of the sample. Or you could run the following bash script to process all samples together
 
@@ -444,7 +445,7 @@ for SAMPLE in $SAMPLES; do
 done
 
 ```
-This script is available in the scripts folder as samples_trim.sh
+This script is available as samples_trim.sh in <u> <b> the scripts folder in the repository. </b> </u>
 
 After trimming our samples, we can run quality control checks to revaluate them; however since we started with really high quality reads, we most likely won't see any changes. 
 
@@ -456,7 +457,9 @@ fastqc ./qc/trim_output/*.fastq -o ./qc/trim_fastqc
 
 Open the fastqc html for each sample. After running FASTQC again on the trimmed reads, we observe no significant changes in the reports except for ‘Sequence Length distribution’ plot. After trimming, reads are likely to be of different lengths.
 
-### Genome Alignment of Preprocessed RNA-Seq reads <a name="alignment"></a>
+-----------------------------------------------------------------
+
+### 3. Genome Alignment of Preprocessed RNA-Seq reads <a name="alignment"></a>
 
 Genome alignment involves mapping reads to a reference genome. This helps us identify where the reads originate from and how similar they are to the reference genome.
 This data can be used to discover new genes and transcripts and for quantifying expression. In the absence of a reference genome, reads can be mapped to a transcriptome (collection of all RNA transcripts present in the cell of a given organism at a given time).

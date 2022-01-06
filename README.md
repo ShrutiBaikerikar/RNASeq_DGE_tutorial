@@ -1333,5 +1333,5 @@ ggplot(set2_gp_df[0:20,]) +
 
 ## License <a name="license"></a>
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/LICENSE) file for details
 

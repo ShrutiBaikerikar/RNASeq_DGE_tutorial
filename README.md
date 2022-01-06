@@ -276,7 +276,7 @@ fastqc ./data/*.fastq -o ./qc/fqc_results
 ```
 
 Let’s look at some quality check reports produced by FASTQC for sample SRR12852623.fastq
-</br>
+<p> </br> </p>
 <p align="center">
 <img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/fastqc_image1.png" width="800" height=400 alt="FastQC basic statistics image"/>
 </p>
@@ -289,7 +289,7 @@ At the left of the image, FASTQC has given judgements (pass, warn, fail) on seve
 For example, the sample fails ‘Sequence Duplication Levels’ but this generally acceptable in RNA-Seq samples.
 
 In the Basic Statistics section, we can see that the sample SRR12852623.fastq has 27218187 sequences with each read length of 50 bases. Also the base quality is given in Sanger/Illumina 1.9 encoding or Phred 33 score.
-</br>
+<p> </br> </p>
 <p align="center">
 <img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/fastqc_image2.png" width="800" height=400 alt="FastQC per base sequence quality image"/>
 </p>
@@ -308,7 +308,7 @@ In the Base quality report, at each position a BoxWhisker type plot is drawn. He
 
 The background of the graph divides the y axis into very good quality calls (green), calls of reasonable quality (orange), and calls of poor quality (red). 
 For the sample SRR12852623, we can see uniformly high-quality scores across all positions in the sequences.
-
+<p> </br> </p>
 <p align="center">
 <img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/fastqc_image3.png" width="800" height=400 alt="FastQC per sequence quality image"/>
 </p>
@@ -320,57 +320,72 @@ For the sample SRR12852623, we can see uniformly high-quality scores across all 
 The per sequence quality score plot examines average quality score over the full length of the read for a subset of sequences. Here majority of the reads should have a high average quality score with no large bumps at the lower quality values.
 
 In this plot, we can see that average quality score per read is 40 for a subset of 1.4 x 10<sup>7</sup> reads.
-</br>
-<ADD FASTQC Image 4>
+<p> </br> </p>
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/fastqc_image4.png" width="800" height=400 alt="FastQC per base sequence content image"/>
 </p>
+
 <p align="center">
+     <b>FastQC Report: Per base sequence content plot for sample SRR12852623 </b>
+</p>
+
 
 The per base sequence plot reports the percent of bases called at each position across all reads in the file. The ‘Per Base Sequence Plot’ shows a Fail in the report for sample SRR12852623.fastq 
 
 This is acceptable for RNA-Sequencing; a non-uniform distribution for the first 10-15 bases of the read. This is due to random hexamer priming that is utilised in RNA-Sequencing library preparation.
+
 Random hexamer primers are a mix of oligonucleotides representing hexamer sequences that are attached to the single stranded RNA for extension by reverse transcription. 
 
 While this process is intended to be random, multiple studies have shown that random hexamer priming introduces a bias in the nucleotide composition at the start of the reads.
 This affects the expression estimates of genes and isoforms and the also the resulting sequence coverage of the transcripts is not uniform.
-In most cases, this does not affect downstream analyses.
 
-<ADD FASTQC Image 5>
+In most cases, this does not affect downstream analyses.
+<p> </br> </p>
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/fastqc_image5.png" width="800" height=400 alt="FastQC per sequence GC content image"/>
 </p>
+
 <p align="center">
+     <b>FastQC Report: Per sequence GC content plot for sample SRR12852623 </b>
+</p>
 
 The ‘Per Sequence GC content’ average GC content over all sequences (indicated as red line) and compares it modelled normal distribution of GC content. 
+
 In a normal random library, a roughly normal GC content would be observed that corresponds to overall GC content of the genome of that particular organism. Since the original GC content is not known, a model of the GC content is developed based on the reference data (indicated as a blue line).
 
 In this plot, we observe that both the distributions are almost similar. In case, the red distribution would be unusually different from the blue one, this could mean that the library is contaminated with a genome of another organism (could be observed by broad peaks) or there are other kinds of bias (in case of over-represented sequences, you would see sharp peaks). 
-
-<ADD FASTQC Image 6>
+<p> </br> </p>
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/fastqc_image6.png" width="800" height=400 alt="FastQC sequence duplication levels image"/>
 </p>
+
 <p align="center">
+     <b>FastQC Report: Per sequence duplication levels for sample SRR12852623 </b>
+</p>
 
 The ‘Sequence Duplication Levels’ plot shows the relative number of sequences with different degrees of duplication.
+
 This module analyses only first 100,000 sequences in each file. Each sequence is tracked to the end of the file to give a representative count of the overall duplication level.
 
 Reads above 75bp are truncated to help in detecting exact match of the duplicated sequences. Also long sequences tend to have sequencing errors that would make them diverse and underrepresent the duplication levels.
 
 In a diverse library most sequences will occur only once in the final set. A low level of duplication may indicate a very high level of coverage of the target sequence, but a high level of duplication could indicate a bias such as PCR over-amplification or low complexity library due to small amounts of starting materials.
-In RNA-Sequencing, duplicates are often a natural consequence of sequencing highly expressed transcripts. Thus it is highly likely that this plot would ‘FAIL’ for RNA-Seq samples.
 
-<ADD FASTQC Image 7>
+In RNA-Sequencing, duplicates are often a natural consequence of sequencing highly expressed transcripts. Thus it is highly likely that this plot would ‘FAIL’ for RNA-Seq samples.
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/fastqc_image7.png" width="800" height=400 alt="FastQC overrepresented sequences image"/>
 </p>
+
 <p align="center">
+     <b>FastQC Report: Overrepresented sequences for sample SRR12852623 </b>
+</p>
 
 The ‘Overrepresented Sequence Plot’ lists all of the sequence which make up more than 0.1% of the total. 
+
 Theoretically, a normal-high throughput library would have a diverse set of sequences; no individual sequence would account for a high fraction of the whole. However, if the sample does contain overrepresented sequences, it could mean that the plot is highly biologically significant or the library is contaminated or it has a bias.
 
 The overrepresented sequences could be vector or adapter sequences. One can BLAST the sequence to determine the identity.
+
 In RNA-Seq, some transcripts may be so abundant that can be listed as overrepresented sequences. Also in case of small libraries, where sequences are not subjected to random fragmentation, one sequence may account for a huge proportion of total reads.
 
 ### Preprocessing of RNA-Seq samples <a name="preprocessing"></a>

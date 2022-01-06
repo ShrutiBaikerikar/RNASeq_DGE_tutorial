@@ -580,7 +580,7 @@ stringtie --merge -p 4 -G ./assembly/annotation/Homo_sapiens_chr.gtf -o ./assemb
 
 ```
 
-Again, you can rest the parameter 'p' to the number of processors in your PC. Also mergelist.txt file is a notepad file containing paths to every GTF file for each sample. It is provided in <u><b>the tutorial_data folder in the repository.</u></b>
+Again, you can rest the parameter 'p' to the number of processors in your PC. Also mergelist.txt file is a notepad file containing paths to every GTF file for each sample. It is provided in **the tutorial_data folder in the repository.**
 
 The output of this command id stringtie_merged.gtf file.
 
@@ -597,8 +597,28 @@ stringtie -e -p 4 -B -G ./assembly/merged_transcript/stringtie_merged.gtf -o ./q
 
 ```
 
-You can run this for each your samples or you can use the script samples_transcriptassembly2.sh present in <u><b>the scripts folder of the repository.</u></b>
+You can run this for each your samples or you can use the script samples_transcriptassembly2.sh present in **the scripts folder of the repository.**
 
+#### 4e. Generating Count Tables for Genes and Transcript estimates
+
+Now we have the quantification folder ready for differential expression analysis. Since we will use DESeq2 for DGE analysis, we will use the prepDE.py3 (python 3 script) to generate count tables for genes and transcripts.
+
+This script is provided by the Stringtie authors. You can download the prepDE.py3 file from https://ccb.jhu.edu/software/stringtie/dl/prepDE.py3
+
+Next create a text file that contains the SAMPLE ID followed by <path to SAMPLE ID> and name it samples_lst.txt You can find this file in **the tutorial_data folder in the repository.**
+
+Install python3 for Linux (if its not already installed). You can follow this guide https://docs.python-guide.org/starting/install3/linux/
+
+Save both prepDE.py3 and samples_lst.txt file in your working directory rna_seq_dge_analysis. Run the following command:
+
+```bash
+
+python3 prepDE.py3 -i samples_lst.txt 
+
+```
+
+This will generate two files gene_count_matrix.csv and transcript_count_matrix.csv  Move these files to dge_analysis folder. 
+ 
 --------------------------------------------------------------------
 
 ### 5. Reestimating Gene Counts from Assembled RNA-Seq reads <a name="gene_counts"></a>
@@ -696,7 +716,7 @@ The 'gene_count_matrix_new.csv' will be used for differential gene analysis with
 
 -----------------------------------------------------------------
 
-### Differential Gene Expression Analysis <a name="diff_gene"></a>
+### 6. Differential Gene Expression Analysis <a name="diff_gene"></a>
 
 Now, that we have our gene_counts_matrix_new.csv file ,obtained from IsoformSwitchAnalyzeR, we can proceed with Differential Gene Expression Analysis. The file contains 33000+ entries for gene expression.
 There are several packages that can be used for Differential Gene Expression Analysis like Ballgown, Limma-voom, edgeR but we will be using DESeq2.
@@ -709,60 +729,69 @@ For example, when comparing Diseased vs Normal samples, genes that are expressed
 It is important to quantify these differences and conduct a statistical analysis to ascertain which genes are actually responsible for systematic changes between the conditions and to eliminate those that are responsible
 for within condition variability. DESeq2 is an R package that tests for differential expression by using negative binomial generalized linear models. 
 
-What is negative binomial distribution?
+*What is negative binomial distribution?*
+
 A binomial experiment is one which has a fixed number of independent trials with only two outcomes: success and familar. The probaility of success is constant and a random variable Y indicates the number of successes.
+
 A negative binomial experiment is almost the same except that the number of trials is not fixed and the random variable Y is the number of trials needed to make r successes.
 
-At the moment, we are working with count data - the number of sequence fragments that are assigned to each gene for each sample. Count data comprises of integers (positive or zero) and the variance of the counts increases with
-the mean. The count values tend to aggregate towards a small bunch of the range leading to a positive skew distribution or long right tail. Count data is modeled with either a Poisson or a negative binomial distribution because:
-- It has zero or positive integers.
-- The variance is a function of mean.
+At the moment, we are working with count data - the number of sequence fragments that are assigned to each gene for each sample. Count data comprises of integers (positive or zero) and the variance of the counts increases with the mean. 
+
+The count values tend to aggregate towards a small bunch of the range leading to a positive skew distribution or long right tail. Count data is modeled with either a Poisson or a negative binomial distribution because:
+* It has zero or positive integers.
+* The variance is a function of mean.
 Both these attributes match the properties of our count data.
 
-Most biological count data are not well approximated by a Poisson distribution because the variance is either less than the mean, an example of underdispersion, or greater than the mean, an example of overdispersion. The negative binomial
-distribution is a useful distribution for count data with overdispersion.
+Most biological count data are not well approximated by a Poisson distribution because the variance is either less than the mean, an example of underdispersion, or greater than the mean, an example of overdispersion. The negative binomial distribution is a useful distribution for count data with overdispersion.
 
-What are Generalized Linear Models? 
-Well if have a response variable Y and predictor variable x, then the linear model would be something similar to our straight line equation (y = mx +c)
+*What are Generalized Linear Models?* 
 
-yi=β0+β1xi+εi
-ε∼N(0,σ)
+ Well if have a response variable Y and predictor variable x, then the linear model would be something similar to our straight line equation (y = mx +c)
 
-Here we have a systematic part β0+β1xi and *random error εi* which is a random draw from a normal distribution with mean zero and variance σ2.
+<p align="center">
+     y<sub>i</sub>=β<sub>0</sub>+β<sub>1</sub>x<sub>i</sub>+ε<sub>i</sub>
+     ε∼N(0,σ)
+ </p>
+
+Here we have a systematic part β<sub>0</sub>+β<sub>1</sub>x<sub>i</sub> and *random error ε<sub>i</sub>* which is a random draw from a normal distribution with mean zero and variance σ<sup>2</sup>.
 
 But in case of generalized linear models, this equation is more helpful:
 
-μi=β0+β1xi
+<p align="center">
+     μ<sub>i</sub>=β<sub>0</sub>+β<sub>1</sub>x<sub>i</sub>
 
 μ = E(Y|X)
-yi∼N(μi,σ)
+y<sub>i</sub>∼N(μ<sub>i</sub>,σ)
+</p>
 
 Here our *response* is a random draw from a normal distribution with mean mu and variance σ2, and not the error term. 
 
 A generalized linear model would look like this:
-
-g(μi) = ηi = α + β1Xi1 + β2Xi2 + · · · + βkXik
-μi ≡ E(Yi)
+<p align="center">
+     g(μ<sub>i</sub>) = η<sub>i</sub> = α + β<sub>1</sub>X<sub>i1</sub> + β<sub>2</sub>X<sub>i2</sub> + · · · + β<sub>k</sub>X<sub>ik</sub>
+     μ<sub>i</sub> ≡ E(Y<sub>i</sub>)
+     </p>
 
 GLM has three components:
-- Random part: The response variable Y
-- Deterministic part: The predictor/explanatory variables Xi1 to Xik
-- Link function: g(μi) = ηi
+* Random part: The response variable Y
+* Deterministic part: The predictor/explanatory variables Xi1 to Xik
+* Link function: g(μi) = ηi
 
 The natural link function for the Negative Binomial is the “log link”, η=log(μ).
 
-How does DESeq2 work?
+#### How does DESeq2 work?
 DESeq2 uses the negative binomial distribution with a slightly more stringent approach compared to other methods but maintaining good balance between sensitivity and specificity (reducing both false positives and false negatives).
 DESeq2 performs differential expression analysis in the following manner:
-- It calculates normalization factors for sequencing depth adjustment. This accounts for differences in library size.
-- The dispersion parameters (α) in negative binomial distribution are estimated. 
-- It fits GLM (Generalized Linear Model) for each gene.
-- The Wald tests or the likelihood ratio tests are performed to identify DE genes.
+* It calculates normalization factors for sequencing depth adjustment. This accounts for differences in library size.
+* The dispersion parameters (α) in negative binomial distribution are estimated. 
+* It fits GLM (Generalized Linear Model) for each gene.
+* The Wald tests or the likelihood ratio tests are performed to identify DE genes.
 
-#### COMMANDS
-We will now use our raw counts present in gene_counts_matrix_new.csv file in DESeq2. Please consider using RStudio for implementing this code or writing any R scripts.
+**COMMANDS**
 
-##### Installing and Loading Libraries
+ We will now use our raw counts present in gene_counts_matrix_new.csv file in DESeq2. Please consider using RStudio for implementing this code or writing any R scripts.
+
+##### 6a.Installing and Loading Libraries
 
 ```r
 
@@ -778,18 +807,19 @@ BiocManger::install("gprofiler2");library(gprofiler2)
 
 ```
 
-##### Reading the count matrix
+##### 6b. Reading the count matrix
 Next, we will read our raw count data from the file gene_counts_matrix_new.csv. Retain only those entries that have relevant IDs in the current NCBI annotation, which is provided by the org.HS.eg.db package.
 Check for any duplicate entries and assign ENSEMBL IDs as rownames to our filtered data. Create the count data matrix.
 
 Next, read the phenodata. Phenodata is a file that stores relevant characteristics about your samples and experiment such as sample id, replicates, treatment group etc.
 Create a new dataframe ("col_data") that has necessary information extracted from the phenodata file but are stored as factors.
-Here the treatment groups are: 
--Uninfected: "Uninfected" 
--Infected with SARS-Cov-2 : "SCov2"
--Infected with SARS-Cov-2 and treated with Remedesvir : "SCov2_R"
 
-The phenodata.csv file is available in the tutorial_data folder in the repository. Save it in the dge_analysis folder.
+Here the treatment groups are: 
+* Uninfected: "Uninfected" 
+* Infected with SARS-Cov-2 : "SCov2"
+* Infected with SARS-Cov-2 and treated with Remedesvir : "SCov2_R"
+
+The phenodata.csv file is available in **the tutorial_data folder in the repository.** Save it in the dge_analysis folder on your system.
 
 ```r
 
@@ -824,11 +854,12 @@ head(col_data)
 
 ````
 
-##### Create the DESeqDataset Object
-DESeqDataset object is the object class used by the DESeq2 package to store the read counts and the intermediate estimated quantities during statistical analysis. It accepts the gene counts as
-a matrix, the phenodata as 'colData' and also the design formula.
-The design formula expresses the variables which will be used in modeling. It is used to estimate the dispersions and to estimate the log2 fold changes of the model. In our case, the two variables
-are 'Group' indicating the treatment/infection status ("Uninfected","SCov2_R","SCov2") and 'Sex' indicating the gender of the donor of the samples.
+##### 6c. Create the DESeqDataset Object
+DESeqDataset object is the object class used by the DESeq2 package to store the read counts and the intermediate estimated quantities during statistical analysis. It accepts the gene counts as a matrix, the phenodata as 'colData' and also the design formula.
+
+The design formula expresses the variables which will be used in modeling. It is used to estimate the dispersions and to estimate the log2 fold changes of the model. 
+
+In our case, the two variables are 'Group' indicating the treatment/infection status ("Uninfected","SCov2_R","SCov2") and 'Sex' indicating the gender of the donor of the samples.
 
 
 ```r
@@ -840,7 +871,7 @@ ddsMat <- DESeqDataSetFromMatrix(countData = countdata,
 
 ```
 
-#### Filtering low-count genes
+#### 6d. Filtering low-count genes
 We pre-filter low count genes as they wouldn't be providing any useful information for further statistical analysis. Since our number of samples and replicates are small,
 we perform a minimal pre-filtering to keep only rows that have at least at least 10 reads total. 
 
@@ -857,7 +888,7 @@ nrow(dds)
 
 ```
 
-##### Performing Differential Gene Expression Analysis
+##### 6e. Performing Differential Gene Expression Analysis
 Finally we perform the DE Analysis on our filtered DESeqDataset object. The estimation steps performed by DEseq function. It estimates size factors, dispersion and fits the model and conducts hypothesis testing.
 
 ```r
@@ -867,23 +898,26 @@ dds <- DESeq(dds)
 
 ```
 
-#### Visualization to assess data quality
-Before, we move to our results, lets examine our data via plots. To test for differential expression, we operate on raw counts and use discrete distributions. However for other downstream analyses such as for visualization or clustering 
-,it might be useful to work with transformed versions of the count data.
+#### 6f. Visualization to assess data quality
+Before, we move to our results, lets examine our data via plots. To test for differential expression, we operate on raw counts and use discrete distributions. 
+
+However for other downstream analyses such as for visualization or clustering ,it might be useful to work with transformed versions of the count data.
 
 The obvious choice of transformation is the logarithm. Since count values for a gene can be zero in some conditions (and non-zero in others), it is suggested to use pseudocounts, i.e. transformations of the form:
+<p align = "center">
+     y=log<sub>2</sub>(n+n<sub>0</sub>)
+</p>
+     where n represents the count values and n<sub>0</sub> is a positive constant.
 
- y=log2(n+n0)
+One alternative provided in DESeq2 package is variance stabilizing transformations (VST). VST serves a rational way of choosing parameters equivalent to n0 above. 
 
-where n represents the count values and n0 is a positive constant.
+It removes the dependence of the variance on the mean, particularly the high variance of the logarithm of count data when the mean is low.
 
-One alternative provided in DESeq2 package is variance stabilizing transformations (VST). VST serves a rational way of choosing parameters equivalent to n0 above. It remove the dependence of the variance on the mean, 
-particularly the high variance of the logarithm of count data when the mean is low.
+We begin by transforming the counts using vst function. Next we assess the count matrix, by constructing a heatmap of normalized counts where samples are differentiated based on Replicates and Treatment Groups.
 
-We begin by transforming the counts using vst function. Next we assess the count matrix, by constructing a heatmap of normalized counts where samples are differentiated based on Replicates and Treatment Groups. [Fig 1]
-Then we examine sample clustering by calculating sample to sample distances based on variance stabilized data and plot a heat map where samples are differentiated based on Sex and Treatment Groups. [Fig 2]
+Then we examine sample clustering by calculating sample to sample distances based on variance stabilized data and plot a heat map where samples are differentiated based on Sex and Treatment Groups.
 
-Related to the distance matrix is the PCA plot, which shows the samples in the 2D plane spanned by their first two principal components. This type of plot is useful for visualizing the overall effect of experimental covariates. [Fig 3]
+Related to the distance matrix is the PCA plot, which shows the samples in the 2D plane spanned by their first two principal components. This type of plot is useful for visualizing the overall effect of experimental covariates.
 
 ```r
 
@@ -920,41 +954,59 @@ ggplot(pcaData, aes(PC1, PC2, color=Group, shape=Sex)) +
   coord_fixed()
 
 ```
+
+The above-mentioned code should produce plots like these:
+<p> </br> </p>
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/sample_heatmap1.png" width="800" height=400 alt="Sample heatmap image 1"/>
 </p>
-<p align="center">
 
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+     <b>A heatmap of normalized counts where samples are differentiated based on Replicates and Treatment Groups. </b>
 </p>
-<p align="center">
 
+<p> </br> </p>
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/sample_heatmap2.png" width="800" height=400 alt="Sample heatmap image 2"/>
 </p>
+
 <p align="center">
+     <b>A heat map of variance stabilized data where samples are differentiated based on Sex and Treatment Groups. </b>
+</p>
 
-##### Extracting Results from DESeqDataset
+<p> </br> </p>
+<p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/sample_pca.png" width="800" height=400 alt="Principal Component Analysis"/>
+</p>
 
-Now returning to 'dds', our DESeqDataset object that contains our information about DE genes, we will extract results from it that suit our analysis. Our design formula ~Group + Sex indicates that the expression of genes in our samples is 
-affected by two covariates: Group (Treatment/Infection Status) and Sex (Gender of the donor).
+<p align="center">
+     <b>Principal Component Analysis </b>
+</p>
+
+##### 6g. Extracting Results from DESeqDataset
+
+Now returning to 'dds', our DESeqDataset object that contains our information about DE genes, we will extract results from it that suit our analysis. 
+
+Our design formula ~Group + Sex indicates that the expression of genes in our samples is affected by two covariates: Group (Treatment/Infection Status) and Sex (Gender of the donor).
+
 We are interested in the changes in the gene expression observed in the 'Group' factor. Our covariate 'Group' consists of three categories: "Uninfected", "SCov2" , "SCov2_R".
 We want two comparisons to assess DE genes:
-- set 1: SCov2 vs Uninfected OR "Samples infected with SARS-Cov-2" vs "Uninfected"
-- set 2: SCov2 vs SCov2_R  OR "Samples infected with SARS-Cov-2" vs "Samples infected with SARS-Cov-2 and treated with Remedesvir"
+* set 1: SCov2 vs Uninfected OR "Samples infected with SARS-Cov-2" vs "Uninfected"
+* set 2: SCov2 vs SCov2_R  OR "Samples infected with SARS-Cov-2" vs "Samples infected with SARS-Cov-2 and treated with Remedesvir"
 
-Please note what set 1 and set 2 refers to because the code from here on will contain variables with these labels. Eg: res1 means results for set 1 : SCov2 vs Uninfected  while res2 means results for set 2 : SCov2 vs SCov2_R
+*Please note what set 1 and set 2 refers to because the code from here on will contain variables with these labels. Eg: res1 means results for set 1 : SCov2 vs Uninfected  while res2 means results for set 2 : SCov2 vs SCov2_R*
 
 We start with extracting results for set 1: SCov2 vs Uninfected. We mention the contrasts as contrast = c("Group","SCov2","Uninfected"). A contrast is a linear combination of estimated log2 fold changes, which can be used to test if differences between groups are equal to zero.
 
-To generate more accurate log2 foldchange estimates, DESeq2 allows for the shrinkage of the LFC estimates toward zero when the information for a gene is low i.e. the gene has low counts and/or high variance. LFC shrinkage is done by lfcShrink function and we use the shrinkage 
-package 'ashr' which implements Adaptive Shrinkage using using Empirical Bayes.
+To generate more accurate log2 foldchange estimates, DESeq2 allows for the shrinkage of the LFC estimates toward zero when the information for a gene is low i.e. the gene has low counts and/or high variance. 
 
-To optimize the power of our statistical analysis, we use Independent Hypothesis Weighting. It is a is a multiple testing procedure that increases power compared to the method of Benjamini and Hochberg (FDR) by assigning data-driven weights to each hypothesis. Finally we examine
-the number of statistically significant DE genes in our results (p-value < 0.1; same as the p-value used by contributors of the dataset). We get 154 DE genes in set 1.
+LFC shrinkage is done by lfcShrink function and we use the shrinkage package 'ashr' which implements Adaptive Shrinkage using using Empirical Bayes.
 
-*Results for set 1: SCov2 vs Uninfected*
+To optimize the power of our statistical analysis, we use Independent Hypothesis Weighting. It is a is a multiple testing procedure that increases power compared to the method of Benjamini and Hochberg (FDR) by assigning data-driven weights to each hypothesis. 
+     
+Finally we examine the number of statistically significant DE genes in our results (p-value < 0.1; same as the p-value used by contributors of the dataset). We get 154 DE genes in set 1.
+
+**Results for set 1: SCov2 vs Uninfected**
 
 ```r
 
@@ -974,9 +1026,9 @@ table(ihWRes1$padj <= 0.1) #154 DE genes
 
 ```
 
-Similarly, we extract results for set 2: "SCov2 vs SCov2_R". We set the contrasts as contrast = c("Group","SCov2","SCov2_R"). We have 131 DE genes in set 2
+Similarly, we extract results for set 2: "SCov2 vs SCov2_R". We set the contrasts as contrast = c("Group","SCov2","SCov2_R"). We have 131 DE genes in set 2.
 
-*Results for set 2: "SCov2 vs SCov2_R"*
+**Results for set 2: "SCov2 vs SCov2_R"**
 
 ```r
 
@@ -996,10 +1048,11 @@ table(ihWRes2$padj <= 0.1) #131 DE gene
 
 ```
 
-##### Annotation
+##### 6h. Annotation
 
-Let's provide some basic annotation to our DE genes in set 1 and set 2 (adjusted p-value < 0.1). Annotation is nothing but features or characteristics that help us identify the genes better such as database IDs,
-gene symbols, chromosome location, gene type etc. Here we are adding two features RefSeq IDs and Gene Symbols.
+Let's provide some basic annotation to our DE genes in set 1 and set 2 (adjusted p-value < 0.1). Annotation is nothing but features or characteristics that help us identify the genes better such as database IDs, gene symbols, chromosome location, gene type etc. 
+     
+Here we are adding two features RefSeq IDs and Gene Symbols.
 
 ```r
 
@@ -1032,9 +1085,10 @@ rm(egENSEMBL2EG,egSYM,m1,m2,m3,m4)
 
 ```
 
-##### Visualizing Results with Volcano Plots
+##### 6i. Visualizing Results with Volcano Plots
 
 Lets create volcanoplot for our DE genes in set 1 (SCov2 vs Uninfected, Fig 4) and set 2 (SCov2 vs SCov2_R, Fig 5). A volcano plot is a type of scatterplot that shows statistical significance (P value) versus magnitude of change (fold change). 
+
 It helps identify genes with large fold changes that are also statistically significant. And these may be the most biologically significant genes.  
 
 Since, we are dealing with small number of samples and replicates we may not see many statistically significant genes here. 
@@ -1069,24 +1123,33 @@ EnhancedVolcano(ihWRes2,
 
 ```
 
+<p> </br> </p>
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set1_volcanoplot.png" width="800" height=400 alt="Volcano plot image 1"/>
 </p>
-<p align="center">
 
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+     <b>Volcano Plot of Differentially Expressed Genes in SARS-Cov-2 infected samples vs Uninfected Samples. </b>
 </p>
-<p align="center">
 
-##### Extracting Statistically significant Differentially Expressed Genes
+<p> </br> </p>
+<p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set2_volcanoplot.png" width="800" height=400 alt="Volcano plot image 2"/>
+</p>
+
+<p align="center">
+     <b>Volcano Plot of Differentially Expressed Genes in SARS-Cov-2 infected samples vs SARS-Cov-2 infected samples treated with Remdesivir </b>
+</p>
+
+##### 6j. Extracting Statistically significant Differentially Expressed Genes
 
 The authors/contributors of this dataset and related manuscript have described statistical significance as adjusted p-value < 0.1 & LogFoldChange LFC > |1|. We will use this criteria to extract our DE genes.
-With this, we will have two dataframes (set 1 and 2):
-- SCov2vsUninfected_sig : 105 statistically significant DE genes
-- SCov2vsSCov2_R_sig: 75 statistically significant DE genes
 
-*Statistically significant DE genes for set 1*
+With this, we will have two dataframes (set 1 and 2):
+* SCov2vsUninfected_sig : 105 statistically significant DE genes
+* SCov2vsSCov2_R_sig: 75 statistically significant DE genes
+
+**Statistically significant DE genes for set 1**
 
 ```r
 
@@ -1105,7 +1168,7 @@ dim(SCov2vsUninfected_sig) #105 8
 
 ```
 
-*Statistically Significant DE genes for set 2*
+**Statistically Significant DE genes for set 2**
 
 ```r
 
@@ -1124,9 +1187,8 @@ dim(SCov2vsSCov2_R_sig) #75 8
 
 ```
 
-##### Pathway Enrichment with enrichR
-Pathway enrichment analysis helps us utilise the current knowledge of genes and biological processes and compare our DE gene list with them. It identifies biological pathways that are enriched in 
-a gene list more than would be expected by chance.
+##### 6j. Pathway Enrichment with enrichR
+Pathway enrichment analysis helps us utilise the current knowledge of genes and biological processes and compare our DE gene list with them. It identifies biological pathways that are enriched in a gene list more than would be expected by chance.
 
 We will first use enrichR to conduct pathway enrichment analysis specifically for COVID-19-related disease terms. When you load the enrichR package (library(enrichr)) , 
 you should see the following messages:
@@ -1143,11 +1205,12 @@ you should see the following messages:
 
 ```
 
-enrichR is a web-based tool providing various types of visualization summaries of collective functions of gene lists as well as an alternative approach to rank enriched terms. Since, it is a web-based 
-tool, it is important to check for 'Connection is Live' messages so that you can proceed with your analysis. If the server is down, you might get an error code and you will have to wait till the
-website is live again.
+enrichR is a web-based tool providing various types of visualization summaries of collective functions of gene lists as well as an alternative approach to rank enriched terms. 
+
+Since, it is a web-based tool, it is important to check for 'Connection is Live' messages so that you can proceed with your analysis. If the server is down, you might get an error code and you will have to wait till the website is live again.
 
 To perform enrichment analysis, we first set our server as 'Enrichr' since we are working on human genes. Next we get gene symbols of our DE genes in both sets: SCov2 vs Uninfected and SCov2 vs SCov2_R.
+
 Set the database to 'COVID-19_Related_Gene_Sets_2021'. We perform separate enrichment analysis for each set using the enrichr() function. Finally we plot our results using plotEnrich() function.
 
 ```r
@@ -1175,42 +1238,58 @@ plotEnrich(enriched_1[["COVID-19_Related_Gene_Sets_2021"]], showTerms = 20, numC
 plotEnrich(enriched_2[["COVID-19_Related_Gene_Sets_2021"]], showTerms = 20, numChar = 50, y = "Count", orderBy = "P.value")
 
 ```
-The first two plots show enrichment for first 20 terms that are ranked by p-value. You can extract terms of your choice from the dataframe (eg: enriched_1) and plot the results.
+The first two plots show enrichment for first 20 terms that are ranked by p-value. 
+
+<p> </br> </p>
+<p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set1_enrichrplot1.png" width="800" height=400 alt="Set1 enrich plot 1"/>
+</p>
 
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+     <b>Enrich Plot of Covid-19 Disease Terms in SARS-Cov-2 infected samples vs Uninfected Samples. </b>
 </p>
+
+<p> </br> </p>
 <p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set2_enrichrplot1.png" width="800" height=400 alt="Set 2 enrich plot 1"/>
+</p>
 
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+     <b>Enrich Plot of Covid-19 Disease Terms in SARS-Cov-2 infected samples vs SARS-Cov-2 infected samples treated with Remdesivir. </b>
 </p>
+
+You can extract terms of your choice from the dataframe (eg: enriched_1) and plot the results.
+<p> </br> </p>
 <p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set1_enrichrplot2.png" width="800" height=400 alt="Custom Set 1 enrich plot 2"/>
+</p>
 
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+     <b>Custom Enrich Plot of Covid-19 Disease Terms in SARS-Cov-2 infected samples vs Uninfected Samples. </b>
 </p>
+
+<p> </br> </p>
 <p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set2_enrichrplot2.png" width="800" height=400 alt="Custom Set 2 enrich plot 2"/>
+</p>
 
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+     <b>Custom Enrich Plot of Covid-19 Disease Terms in SARS-Cov-2 infected samples vs SARS-Cov-2 infected samples treated with Remdesivir. </b>
 </p>
-<p align="center">
 
 ##### Pathway enrichment with gprofiler2
 
-gprofiler2 provides an R interface to the widely used web toolset g:Profiler (https://biit.cs.ut.ee/gprofiler). It performs functional enrichment analysis and visualization of gene lists, 
-converts gene/protein/SNP identifiers to numerous namespaces, and maps orthologous genes across species. It relies primarily on ENSEMBL databases.
+gprofiler2 provides an R interface to the widely used web toolset g:Profiler (https://biit.cs.ut.ee/gprofiler). It performs functional enrichment analysis and visualization of gene lists, converts gene/protein/SNP identifiers to numerous namespaces, and maps orthologous genes across species. It relies primarily on ENSEMBL databases.
 
-To begin the analysis, we start with extracting up-regulated and downregulated genes and arrange them in decreasing order of Log Fold Change Values. This is done for each set. Next, we perform the
-enrichment analysis using the gost() function. Here we set certain parameters:
--Databases : sources=c("GO","KEGG","REAC","WP")
--Organism: organism = "hsapiens"
--P-value threshold: user_threshold = 0.05
--Multiple testing correction method: correction_method = "fdr"
+To begin the analysis, we start with extracting up-regulated and downregulated genes and arrange them in decreasing order of Log Fold Change Values. This is done for each set. 
 
-Our results are stored in a dataframe. To plot our results, we convert the p-values to a negative log10 scale. Finally we plot the first twenty entries in our results dataframe using ggplot2. 
-Note that these are first twenty entries, they are not ranked by p-values.
+Next, we perform the enrichment analysis using the gost() function. Here we set certain parameters:
+* Databases : sources=c("GO","KEGG","REAC","WP")
+* Organism: organism = "hsapiens"
+* P-value threshold: user_threshold = 0.05
+* Multiple testing correction method: correction_method = "fdr"
+
+Our results are stored in a dataframe. To plot our results, we convert the p-values to a negative log10 scale. Finally we plot the first twenty entries in our results dataframe using ggplot2. Note that these are first twenty entries, they are not ranked by p-values.
 
 Lastly, you can extract terms of your choice, that are relevant to your current study, and plot results accordingly.
 
@@ -1299,25 +1378,46 @@ ggplot(set2_gp_df[0:20,]) +
 
 ```r
 
-<p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
-</p>
-<p align="center">
+The first two plots show enrichment for first 20 terms. 
 
+<p> </br> </p>
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
-</p>
-<p align="center">
-
-<p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
-</p>
-<p align="center">
-
-<p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set1_gprofilerplot1.png" width="800" height=400 alt="Set1 gprofiler plot 1"/>
 </p>
 
+<p align="center">
+     <b>GProfiler Plot for Gene Enrichment Analysis in SARS-Cov-2 infected samples vs Uninfected Samples. </b>
+</p>
+
+<p> </br> </p>
+<p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set2_gprofilerplot1.png" width="800" height=400 alt="Set 2 gprofiler plot 1"/>
+</p>
+
+<p align="center">
+     <b>GProfiler Plot of Gene Enrichment Analysis in SARS-Cov-2 infected samples vs SARS-Cov-2 infected samples treated with Remdesivir. </b>
+</p>
+
+You can extract terms of your choice from the dataframe (eg: set1_gp_df) and plot the results.
+<p> </br> </p>
+<p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set1_gprofilerplot2.png" width="800" height=400 alt="Custom Set 1 gprofiler plot 2"/>
+</p>
+
+<p align="center">
+     <b>Custom GProfiler Plot of Gene Enrichment Analysis in SARS-Cov-2 infected samples vs Uninfected Samples. </b>
+</p>
+
+<p> </br> </p>
+<p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set2_gprofilerplot2.png" width="800" height=400 alt="Custom Set 2 gprofiler plot 2"/>
+</p>
+
+<p align="center">
+     <b>Custom GProfiler Plot of Gene Enrichment Analysis in SARS-Cov-2 infected samples vs SARS-Cov-2 infected samples treated with Remdesivir. </b>
+</p>
+
+-------------------------------------------------------------------------------
 ## Citations <a name="citations_list"></a>
 
 **[1]** Müller JA, Groß R, Conzelmann C, et al. "**SARS-CoV-2 infects and replicates in cells of the human endocrine and exocrine pancreas.**" 
@@ -1371,6 +1471,7 @@ ggplot(set2_gp_df[0:20,]) +
 
 **[16]** Wickham H (2016). "** ggplot2: Elegant Graphics for Data Analysis.**" Springer-Verlag New York. ISBN 978-3-319-24277-4 [[Source Code](https://ggplot2.tidyverse.org.)]
 
+-----------------------------------------------------------------------------------
 
 ## License <a name="license_name"></a>
 

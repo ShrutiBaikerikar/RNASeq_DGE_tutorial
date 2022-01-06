@@ -7,10 +7,10 @@ It has many applications such as 'de novo' transcriptome assembly, study of meth
 Differential Gene Expression is one of the most common techniques used in downstream analysis of RNA-Seq data. It helps us identify which genes may be under/over-expressed in specific conditions when compared to reference/normal conditions. And these genes whose expression are significantly altered could be the ones contributing to the biological phenomea or disease that we are studying.
 
 In this tutorial, we will be going over a general workflow for Differential Gene Expression using RNA Sequencing data. While these are the most common steps involved in DGE analysis, there are a few things you must keep in mind:
--There are many tools available for each step of DGE analysis. You can choose any of them and this choice is heavily influenced by type of data, organism, sample number, statiscal requirements as well as goals of research/ analysis.
--RNA Sequencing data analysis is not limited to identifying differential genes alone; it has many applications and these require separate workflows.
--The tools used in this tutorial help analyse the chose dataset but this may not be the same for you. You may have to choose separate tools for your RNA-Seq data.
--When working with large number of samples, it is advisable to work on a high performance cluster or utilise cloud services.
+* There are many tools available for each step of DGE analysis. You can choose any of them and this choice is heavily influenced by type of data, organism, sample number, statiscal   requirements as well as goals of research/ analysis.
+* RNA Sequencing data analysis is not limited to identifying differential genes alone; it has many applications and these require separate workflows.
+* The tools used in this tutorial help analyse the chose dataset but this may not be the same for you. You may have to choose separate tools for your RNA-Seq data.
+* When working with large number of samples, it is advisable to work on a high performance cluster or utilise cloud services.
 
 Let's begin the tutorial with a basic introduction to RNA Sequencing.
 
@@ -29,8 +29,8 @@ Let's begin the tutorial with a basic introduction to RNA Sequencing.
      - [Transcriptome assembly of Aligned Reads](#assembly)
      - [Reestimating Gene Counts Matrix](#gene_counts)
      - [Differential Gene Expression Analysis](#diff_gene)
-- [Citations](#citations)
-- [License](#license)
+- [Citations](#citations_list)
+- [License](#license_name)
 
 ## Introduction <a name="intro"></a>
 
@@ -47,16 +47,19 @@ The quality-checked total RNA is used for library preparation where RNAs in the 
 
 The result of sequencing are raw reads which are further analysed with bioinformatic and computational techniques. In the next section, we will go over the different steps involved in the computational aspect of RNA-Seq analysis. 
 
-#### What are the general steps involved in RNA Sequencing Data Analysis?
+### What are the general steps involved in RNA Sequencing Data Analysis?
 
 Millions of reads are obtained from the RNA sequencing experiments which are analysed with the help of computational approaches and statistics. These techniques assist in gene and splice variant discovery, differential expression analysis and detection of fusion genes, variants.
 The following image gives you a brief idea of the computational approaches involved in RNA-Seq data analysis.
 
-<p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
-</p>
-<p align="center">
 
+<p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/rna_seq_workflow.png" width="400" height=600 alt="RNA Sequencing Workflow image"/>
+</p>
+
+<p align="center">
+     <b>Differential Gene Expression in RNA Sequencing - Workflow </b>
+</p>
 
 On the left are the basic steps involved in RNA Sequencing Data Analysis and on the right are the tools/software that are used in these procedures. 
 Not all analysis, ends with Differential Expression Analysis. Sometimes pre-processed reads can be directly used for de-novo transcriptome assembly followed by annotation.
@@ -86,7 +89,7 @@ We will need the FASTQ files for the analysis. This can be downloaded in 2 ways:
 You can download the SRA toolkit (https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=software) and install it. 
 SRA toolkit can be run via command line. You can download each FASTQ file using SRR ID and the commands prefetch and fasterq-dump. We will cover this in the tutorial.
 
--From ENA browser: You can go to the European Nucleotide Archive and enter the accession number PRJNA670242 on the top right.
+- From ENA browser: You can go to the European Nucleotide Archive (https://www.ebi.ac.uk/ena/browser/) and enter the accession number PRJNA670242 on the top right.
 Click on the view button and that will lead you to a page giving details about the BioProject PRJNA670242. The table on the page enlists all the 6 FASTQ files that can be downloaded by clicking on the ‘Download All’ button.
 
 ### What is the scientific background of the dataset?
@@ -94,25 +97,25 @@ Click on the view button and that will lead you to a page giving details about t
 The dataset GSE159717 involves RNA Sequencing on samples of human pancreatic islet cells obtained from patients diagnosed with COVID-19.
 This study was conducted by Müller and colleagues involving Ulm University Medical Center, Ulm, Germany and multiple institutions. Please check this link (https://pubmed.ncbi.nlm.nih.gov/33536639/) for the full affiliation list.
 
-Citation: Müller JA, Groß R, Conzelmann C, Krüger J, Merle U, Steinhart J, Weil T, Koepke L, Bozzo CP, Read C, Fois G, Eiseler T, Gehrmann J, van Vuuren J, Wessbecher IM, Frick M, Costa IG, Breunig M, Grüner B, Peters L, Schuster M, Liebau S, Seufferlein T, Stenger S, Stenzinger A, MacDonald PE, Kirchhoff F, Sparrer KMJ, Walther P, Lickert H, Barth TFE, Wagner M, Münch J, Heller S, Kleger A. SARS-CoV-2 infects and replicates in cells of the human endocrine and exocrine pancreas. Nat Metab. 2021 Feb;3(2):149-165. doi: 10.1038/s42255-021-00347-1. Epub 2021 Feb 3. PMID: 33536639.
+***Citation**: Müller JA, Groß R, Conzelmann C, Krüger J, Merle U, Steinhart J, Weil T, Koepke L, Bozzo CP, Read C, Fois G, Eiseler T, Gehrmann J, van Vuuren J, Wessbecher IM, Frick M, Costa IG, Breunig M, Grüner B, Peters L, Schuster M, Liebau S, Seufferlein T, Stenger S, Stenzinger A, MacDonald PE, Kirchhoff F, Sparrer KMJ, Walther P, Lickert H, Barth TFE, Wagner M, Münch J, Heller S, Kleger A. **SARS-CoV-2 infects and replicates in cells of the human endocrine and exocrine pancreas.** Nat Metab. 2021 Feb;3(2):149-165. doi: 10.1038/s42255-021-00347-1. Epub 2021 Feb 3. PMID: 33536639.*
 
 COVID was initially considered an exclusive lung disease. However, as the infection spread and cases increased, evidences from clinical and experimental studies show that the virus damages other organs such as kidneys, heart, brain, gastrointestinal and endocrine organs.
 
 In this study, the researchers focused on SARS-Cov-2 infection in the pancreas. The pancreas is an organ located in the abdomen that aids in conversion of food to energy. It has:
-• Exocrine function: It releases digestive enzymes in the small intestine to help break down the food into fats, carbohydrates and proteins.
-• Endocrine function: It releases hormones such as insulin and glucagon into the bloodstream that helps maintain optimal blood sugar levels.
+ * Exocrine function: It releases digestive enzymes in the small intestine to help break down the food into fats, carbohydrates and proteins.
+ * Endocrine function: It releases hormones such as insulin and glucagon into the bloodstream that helps maintain optimal blood sugar levels.
 
 Multiple studies showed a connection between COVID infection and poor pancreatic function. 
-• Pre-existing diabetes increased the risk of developing SARS-Cov-2 infection; it required intensive treatment and was associated with increasing mortality.
-• SARS-Cov-2 infection affected the exocrine function of the pancreas leading to pancreatitis (severe inflammation of pancreas), pancreatic enlargement and abnormal levels of digestive enzymes in the patients.
-• Increased blood sugar levels was observed in patients with type2 diabetes and SARS-Cov-2 infection
-• Ketoacidosis (increase in ketone levels due to low insulin levels which makes the blood acidic) was observed in diabetic and non-diabetic patients with SARS-Cov-2 infection
-• New onset of type I diabetes in the absence of autoantibodies following SARS-Cov-2 infection was observed. 
+ * Pre-existing diabetes increased the risk of developing SARS-Cov-2 infection; it required intensive treatment and was associated with increasing mortality.
+ * SARS-Cov-2 infection affected the exocrine function of the pancreas leading to pancreatitis (severe inflammation of pancreas), pancreatic enlargement and abnormal levels of    digestive enzymes in the patients.
+ * Increased blood sugar levels was observed in patients with type2 diabetes and SARS-Cov-2 infection
+ * Ketoacidosis (increase in ketone levels due to low insulin levels which makes the blood acidic) was observed in diabetic and non-diabetic patients with SARS-Cov-2 infection
+ * New onset of type I diabetes in the absence of autoantibodies following SARS-Cov-2 infection was observed. 
 
 SARS-Cov-2 might trigger beta-cell injury (cells responsible for production of insulin) either by disrupting immune function or by directly interrupting beta cell function.
 The researchers pointed out that several cellular factors or proteins expressed on target cells could be responsible for entry of SARS-Cov-2 in pancreatic cells that lead to subsequent destruction. These factors include:
-• angiotensin-converting enzyme 2 (ACE2): protein that affects blood sugar levels and blood pressure and it also serves as a receptor for SARS-Cov-2 viral entry.
-• transmembrane serine protease 2 (TMPRSS2): protein that is expressed on cells of multiple organs that assists in breakdown of proteins which has multiple implications in body functions such as immune function and allergies, development of prostate cancer and influencing exocrine function of the pancreas. TMPRSS2 also assists in viral entry and spread.
+* **angiotensin-converting enzyme 2 (ACE2)**: protein that affects blood sugar levels and blood pressure and it also serves as a receptor for SARS-Cov-2 viral entry.
+* **transmembrane serine protease 2 (TMPRSS2)** : protein that is expressed on cells of multiple organs that assists in breakdown of proteins which has multiple implications in body functions such as immune function and allergies, development of prostate cancer and influencing exocrine function of the pancreas. TMPRSS2 also assists in viral entry and spread.
 
 To examine the possible mechanism of viral entry and eventual disturbance of pancreatic function, the researchers conducted the multiple experimental studies; however, we will be focussing on RNA sequencing analysis on uninfected and infected (with or without remdesivir), cultured human islets from two donors utilised in the above mentioned study. Expression profiling libraries were sequenced on a HiSeq 4000 instrument (Illumina) in 50-bp, single-end mode.
 
@@ -477,7 +480,7 @@ hisat2 –p 4 -f –x ./alignment/index/genome -q -U ./alignment/input_reads/ SR
 You have to run this command for each sample by changing the sample names. Alternatively, you can use the samples_alignment.sh script present in the scripts folder in the repository. In this command -p refers to the number of processors; here I have used 4 since I have access to it, you can change this number depending on your PC configuration.
 
 
-### Transcriptome Assembly with Aligned RNA-Seq reads <a name="preprocessing"></a>
+### Transcriptome Assembly with Aligned RNA-Seq reads <a name="assembly"></a>
 
 Transcriptome assembly is performed to obtain full-length transcripts based on the sequence reads. DNA sequence of one or more genes is transcribed into RNA and this is referred to as RNA transcript. A mature RNA transcript comprises of a combination of exons (protein coding sequences).
 
@@ -654,7 +657,7 @@ write.csv(geneCountMatrix,"rna_seq_dge_analysis/dge_analysis/gene_count_matrix_n
 The 'gene_count_matrix_new.csv' will be used for differential gene analysis with DeSeq2. 
 
 
-### Differential Gene Expression Analysis <a name="diff_genes"></a>
+### Differential Gene Expression Analysis <a name="diff_gene"></a>
 
 Now, that we have our gene_counts_matrix_new.csv file ,obtained from IsoformSwitchAnalyzeR, we can proceed with Differential Gene Expression Analysis. The file contains 33000+ entries for gene expression.
 There are several packages that can be used for Differential Gene Expression Analysis like Ballgown, Limma-voom, edgeR but we will be using DESeq2.
@@ -1275,9 +1278,8 @@ ggplot(set2_gp_df[0:20,]) +
 <p align="center">
 <img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
 </p>
-<p align="center">
 
-## Citations <a name="citations"></a>
+## Citations <a name="citations_list"></a>
 
 **[1]** Müller JA, Groß R, Conzelmann C, et al. "**SARS-CoV-2 infects and replicates in cells of the human endocrine and exocrine pancreas.**" 
         Nat Metab. 2021;3(2):149-165. doi:10.1038/s42255-021-00347-1 PMID: 33536639. [[Research paper](https://pubmed.ncbi.nlm.nih.gov/33536639/)]
@@ -1331,7 +1333,7 @@ ggplot(set2_gp_df[0:20,]) +
 **[16]** Wickham H (2016). "** ggplot2: Elegant Graphics for Data Analysis.**" Springer-Verlag New York. ISBN 978-3-319-24277-4 [[Source Code](https://ggplot2.tidyverse.org.)]
 
 
-## License <a name="license"></a>
+## License <a name="license_name"></a>
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/LICENSE) file for details
 

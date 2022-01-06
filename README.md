@@ -1,5 +1,4 @@
 # RNA-SEQ Differential Gene Expression Analysis of COVID-19 Infected Pancreas Cells
-===============================================================
 
 Next Generation Sequencing technologies promote research in genome wide expression dataand provide high resolution and precise measurements of transcript levels to study gene expression. RNA-Sequencing has become one of the main choices to measure expression levels.
 It has many applications such as 'de novo' transcriptome assembly, study of methylation patterns, examining single nucleotide variants, study of alternative splicing etc.
@@ -150,24 +149,24 @@ Here is how you can organize your working directory structure:
   │       ├── 2_output/                 <- Alignment files generated from HISAT2 (.SAM)
   │       ├── 3_input_reads/            <- Trimmed and QC checked input reads for each sample for genome alignment (.FASTQ)
   │   
-      └── assembly/                     <- Data generated during transcriptome assembly steps
+  │    └── assembly/                     <- Data generated during transcriptome assembly steps
   │       ├── 1_annotation/             <- Folder to store Genome annotation file (.GTF/.GFF)
   │       ├── 2_merged_transcripts/     <- Data generated during stringtie merge_transcript step
   │       ├── 3_output/                 <- Folder to store transcriptome assembly output files (.GTF)
   │       ├── 4_sorted_bam_reads/       <- Folder to store sorted BAM input files for transcriptome assembly (.BAM)
   │
-      └── data/                         <- Location of input  RNAseq data
+  │    └── data/                         <- Location of input  RNAseq data
   │  
-      └── qc/                           <- Data generated during quality control and pre-processing steps
+  │    └── qc/                           <- Data generated during quality control and pre-processing steps
   │       ├── 1_fqc_results/            <- Results of FASTQC for each sample
   │       ├── 2_trim_fastqc/            <- Results of FASTQC for every trimmed sample
   │       ├── 3_trim_output/            <- Output files of Trimmed reads for every sample
   │
-      └── ballgown/                     <- Data generated during Stringtie's quantification step; stores transcript quanitifcation data for every sample
+  │    └── ballgown/                     <- Data generated during Stringtie's quantification step; stores transcript quanitifcation data for every sample
   │  
-      └── dge_analysis/                 <- Folder to store files generated during DESeq2 analysis      
+  │    └── dge_analysis/                 <- Folder to store files generated during DESeq2 analysis      
   │       
-  │  
+   
 ``` 
 --------------------------------------------------------------------------------------------------
 
@@ -243,14 +242,13 @@ prefetch SRR12852628
 fastq-dump SRR12852628
 
 ```
+---------------------------------------------------------------------------------
 
 ## Differential Gene Expression Analysis from RNA Sequencing Data - Workflow <a name="workflow"></a>
 
 Now, we will begin our data analysis. One important thing to note is that this is an exploratory data analysis; the number of samples/ replicates in this dataset are small. They are great to find some new leads on how COVID-19 infection affects pancreatic cell functions and diabetes onset but we definitely need larger number of samples to make definitive conclusions.
 Nevertheless, the aim of this tutorial is to give you a general idea of DGE RNA Seq analysis and this dataset helps achieve just that.
-
-Let's begin our analysis with quality control of our samples.
--------------------------------------------------------------------
+Lets's begin our analysis with quality control of our raw RNA-Seq reads.
 
 ### Quality Control of RNA-Seq Samples <a name="quality_control"></a>
 
@@ -278,38 +276,51 @@ fastqc ./data/*.fastq -o ./qc/fqc_results
 ```
 
 Let’s look at some quality check reports produced by FASTQC for sample SRR12852623.fastq
+</br>
+<p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/fastqc_image1.png" width="800" height=400 alt="FastQC basic statistics image"/>
+</p>
 
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+     <b>FastQC Report: Basic Statistics for sample SRR12852623 </b>
 </p>
-<p align="center">
 
 At the left of the image, FASTQC has given judgements (pass, warn, fail) on several quality metrics. These judgements are based on general thresholds and poor judgements may not always suggest that the sample has failed quality checks.
 For example, the sample fails ‘Sequence Duplication Levels’ but this generally acceptable in RNA-Seq samples.
 
 In the Basic Statistics section, we can see that the sample SRR12852623.fastq has 27218187 sequences with each read length of 50 bases. Also the base quality is given in Sanger/Illumina 1.9 encoding or Phred 33 score.
+</br>
+<p align="center">
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/fastqc_image2.png" width="800" height=400 alt="FastQC per base sequence quality image"/>
+</p>
 
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+     <b>FastQC Report: Per base sequence quality for sample SRR12852623 </b>
 </p>
-<p align="center">
 
 This plot shows the range of quality values across all bases at each position in the FASTQ file. Base quality indicates the confidence in the base call or how correctly the sequencer has identified the base at a given position in the given sequence.
+
 These scores are expressed in Phred scale which is given as Q = -10 log10 P where P is the probability that the base is wrong. The scores range from 0 to 40. In the FASTQ files, they are encoded as ASCII characters instead of numbers to save space.
+
 Phred 33 score refers to the encoding where the 33rd ASCII character is used as 0. Phred 64 score is used in old Illumina software the 64th ASCII character is used as 0.
 
 In the Base quality report, at each position a BoxWhisker type plot is drawn. Here the upper and lower whiskers indicate 10% and 90% points while blue line indicates mean quality and the red line indicates median quality.
+
 The background of the graph divides the y axis into very good quality calls (green), calls of reasonable quality (orange), and calls of poor quality (red). 
-For the sample SRR12852623, we can see uniformly high-quality scores across all positions in the sequences. 
+For the sample SRR12852623, we can see uniformly high-quality scores across all positions in the sequences.
 
 <p align="center">
-<img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>
+<img src="https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/fastqc_image3.png" width="800" height=400 alt="FastQC per sequence quality image"/>
 </p>
+
 <p align="center">
+     <b>FastQC Report: Per sequence quality score for sample SRR12852623 </b>
+</p>
 
 The per sequence quality score plot examines average quality score over the full length of the read for a subset of sequences. Here majority of the reads should have a high average quality score with no large bumps at the lower quality values.
-In this plot, we can see that average quality score per read is 40 for a subset of 1.4 x 107 reads.
 
+In this plot, we can see that average quality score per read is 40 for a subset of 1.4 x 10<sup>7</sup> reads.
+</br>
 <ADD FASTQC Image 4>
 <p align="center">
 <img src="https://github.com/ShrutiBaikerikar/machine-learning-bioinformatics-paper-implementations/blob/main/Cover_Image/ML_BI_Cover.jpeg" width="800" alt="cover image" title='Cover image for repository Machine-learning-Bioinformatics-Paper-Implementations'/>

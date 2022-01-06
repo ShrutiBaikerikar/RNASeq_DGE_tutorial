@@ -1,0 +1,6 @@
+SRR12852623 ./quantification/SRR12852623/SRR12852623_requant.gtf
+SRR12852624 ./quantification/SRR12852624/SRR12852624_requant.gtf
+SRR12852625 ./quantification/SRR12852625/SRR12852625_requant.gtf
+SRR12852626 ./quantification/SRR12852626/SRR12852626_requant.gtf
+SRR12852627 ./quantification/SRR12852627/SRR12852627_requant.gtf
+SRR12852628 ./quantification/SRR12852628/SRR12852628_requant.gtf

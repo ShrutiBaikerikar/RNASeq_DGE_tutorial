@@ -400,11 +400,11 @@ This assists in better alignment of the reads to the genome.
 These steps include:
 * **Filtering**: You can filter reads based on their quality. Average read quality is calculated and if it falls below the user-defined threshold that read is dropped from further analysis. In case of Paired End reads, if the mean quality of either of the reads drops below the given threshold, the read pair is dropped from further analysis.
 * **Trimming**: Instead of dropping entire reads or read pairs from further analysis, you can trim low quality bases from a given read. There are several ways to trim a read:
-   * <u>Trimming from either end</u>: Starting from either 3’ or 5’ end, bases are trimmed if their quality falls below the user-defined threshold. If the trimmed reads fall below a user-defined length, they can be filtered.
-   * <u>Trimming using a sliding window approach</u>: Instead of examining the quality of one base at a time, you can define a length of a search window and examine the mean quality of bases in that window. If the mean quality is above the given threshold, the window slides further to examine the next set of bases.</br>
+   * *Trimming from either end*: Starting from either 3’ or 5’ end, bases are trimmed if their quality falls below the user-defined threshold. If the trimmed reads fall below a user-defined length, they can be filtered.
+   * *Trimming using a sliding window approach*: Instead of examining the quality of one base at a time, you can define a length of a search window and examine the mean quality of bases in that window. If the mean quality is above the given threshold, the window slides further to examine the next set of bases.</br>
 Sliding the window from the 5′ end keeps the beginning of the read until the quality falls below the defined threshold, while sliding from the 3′ end cuts until it reaches a window with good enough quality. 
 The window size is an essential parameter that needs to be tuned; very small window size may lead to a stringent check and lead to loss of reads.
-   * <u>Trimming by sum method</u>: This is also known as BWA quality trimming. The read is scanned from the 3’ end, the quality of each base is compared to the user defined threshold and the difference is summed up. The read is trimmed at the point where the ‘summed up difference’ is the highest.
+   * *Trimming by sum method*: This is also known as BWA quality trimming. The read is scanned from the 3’ end, the quality of each base is compared to the user defined threshold and the difference is summed up. The read is trimmed at the point where the ‘summed up difference’ is the highest.
 * **Removal of Ambiguous Bases**: If a base is not identified during sequencing, it is indicated as a N. Higher number of Ns in the read should be removed to avoid false mapping and incorrect transcriptome assemblies.
 * **Removal of Adapters**: Adapters are short, known sequences of oligonucleotides that are used to extract or fish out DNA sequences of interest. Other tags such as primers and multiplexing identifiers may also be attached to the reads.
 These need to be removed prior to further analysis. However, removal of adapter content can present several hurdles.</br>
@@ -465,9 +465,9 @@ Genome alignment involves mapping reads to a reference genome. This helps us ide
 This data can be used to discover new genes and transcripts and for quantifying expression. In the absence of a reference genome, reads can be mapped to a transcriptome (collection of all RNA transcripts present in the cell of a given organism at a given time).
 
 However, there are a couple of challenges when mapping reads to a genome:
-• There are millions of reads and they are short in length. Genomes are large and do contain sequences like repeats or pseudogenes which make it difficult to map each read to a unique position.
-• Additionally, there are mismatches and indels caused by genomic variation and sequencing errors that need to be dealt with.
-• Many organisms have introns (non-coding areas of an RNA transcript) in their genes, so the reads may align non-continuously to the reference genome.
+* There are millions of reads and they are short in length. Genomes are large and do contain sequences like repeats or pseudogenes which make it difficult to map each read to a unique position.
+* Additionally, there are mismatches and indels caused by genomic variation and sequencing errors that need to be dealt with.
+* Many organisms have introns (non-coding areas of an RNA transcript) in their genes, so the reads may align non-continuously to the reference genome.
 
 Multiple alignment programs have been developed to overcome these challenges. Here we will be using HISAT2 (Hierarchical Indexing For Spliced Alignment of Transcripts).
 
@@ -481,16 +481,16 @@ HISAT2 builds a whole genome global index and multiple small local indexes to ma
 Additionally, the graph-based index captures a wide representation of genetic variants (SNPs) with very low memory requirements. 
 
 The basic approach of the aligners is ‘seed and extend’ which involves:
-1.  identifying segments of reads of defined lengths (seeds) that precisely map to a given location in the genome. Seed matches can be exact or tolerate mismatches.
+1. identifying segments of reads of defined lengths (seeds) that precisely map to a given location in the genome. Seed matches can be exact or tolerate mismatches.
 2. extend the reads in both directions to map rest of the read or maximum mappable length
 
 HISAT2 maps longer part of the read that maps to the genome contiguously using the global index. Once this is mapped, it helps to identify the relevant local index.  HISAT2 can usually align the remaining part of the read within a single local index rather than searching across the whole genome.
 
 You can download and install HISAT2 from http://daehwankimlab.github.io/hisat2/download/ . Additionally, download the reference genome index (H.sapiens GRCh38 genome) given by HISAT2 developers so as to save time.
 
-Unzip and save the downloaded ‘genome’ index in the index folder under the alignment directory.
+Unzip and save the downloaded ‘genome’ index in the index folder under the alignment directory. 
 
-Navigate to your working directory rna_seq_dge_analysis. Next copy the trimmed reads to the reads folder in the alignment directory.
+Navigate to your working directory rna_seq_dge_analysis. Copy the trimmed reads to the input_reads folder in the alignment directory using the following command: 
 
 ```bash
 
@@ -502,14 +502,15 @@ Assuming you have downloaded and installed HISAT2. Add HISAT2 to your path, if n
 
 ```bash
 
-hisat2 –p 4 -f –x ./alignment/index/genome -q -U ./alignment/input_reads/ SRR12852623_trimmed.fastq –S ./alignment/output/SRR12852623_aligned.sam
+hisat2 –p 4 -f –x ./alignment/index/genome -q -U ./alignment/input_reads/SRR12852623_trimmed.fastq –S ./alignment/output/SRR12852623_aligned.sam
 
 ```
 
-You have to run this command for each sample by changing the sample names. Alternatively, you can use the samples_alignment.sh script present in the scripts folder in the repository. In this command -p refers to the number of processors; here I have used 4 since I have access to it, you can change this number depending on your PC configuration.
+You have to run this command for each sample by changing the sample names. Alternatively, you can use the samples_alignment.sh script present in **the scripts folder in the repository.** In this command -p refers to the number of processors; here I have used 4 since I have access to it, you can change this number depending on your PC configuration.
 
+---------------------------------------------------------------------
 
-### Transcriptome Assembly with Aligned RNA-Seq reads <a name="assembly"></a>
+### 4. Transcriptome Assembly with Aligned RNA-Seq reads <a name="assembly"></a>
 
 Transcriptome assembly is performed to obtain full-length transcripts based on the sequence reads. DNA sequence of one or more genes is transcribed into RNA and this is referred to as RNA transcript. A mature RNA transcript comprises of a combination of exons (protein coding sequences).
 
@@ -524,15 +525,17 @@ There are two ways of performing transcriptome assembly:
 We will be utilising the first step- Reference guided assembly. We will use StringTie to perform transcriptome assembly.
 
 StringTie2 is a fast assembler of RNA-Seq alignments into potential transcripts. As a reference guided assembler, it takes advantage of an existing genome to which the reads are aligned. It then builds splice graphs based on these alignments and uses the graphs to construct individual transcripts.
+
 It also offers optional de novo assembly step to assemble and quantitate full-length transcripts representing multiple splice variants for each gene locus.
 
 You can download StringTie from https://ccb.jhu.edu/software/stringtie/index.shtml. Add it to your PATH.
 
 Before we begin transcriptome assembly with StringTie2, we need to preprocess our SAM files obtained in the previous step. 
 
-#### Converting SAM files to BAM files
+#### 4a. Converting SAM files to BAM files
 
-We have to convert SAM files to BAM files and sort them by coordinate before using them further. We will use SAMtools for this step. You can download it from ……… Add it to your path.
+We have to convert SAM files to BAM files and sort them by coordinate before using them further. We will use SAMtools for this step. 
+
 SAM format is Sequence Alignment Map format that stores biological sequences that have been aligned to a reference sequence. The binary equivalent of SAM is BAM (Binary Alignment Map) which stores the same data in a binary representation to save space.
 
 SAMtools is a package that helps manipulate SAM format: such as SAM/BAM conversion, sorting, indexing, or merging. Please download and install SAMtools from http://www.htslib.org/  and add it to your path.
@@ -545,10 +548,10 @@ samtools sort -@ 4 -o ./assembly/sorted_bam_reads/SRR12852623_sorted.bam ./align
 
 ```
 
-Run this for each sample by replacing the sample name or you can use the script samples_sortbam.sh from the scripts folder. Here -@ refers to the number of processers and you can change that as per your PC configuration.
+Run this for each sample by replacing the sample name or you can use the script samples_sortbam.sh from **the scripts folder in the repository.** Here -@ refers to the number of processers and you can change that as per your PC configuration.
 
 
-#### Reference-Guided Transcript Assembly
+#### 4b. Reference-Guided Transcript Assembly
 
 To begin reference-guided transcript assembly, we first need the reference human genome GTF file. GTF refers to Gene Transfer Format. It contains information about gene structure such as chromosome ID, annotations from public database, features like coding sequence, intron, exon, start codon, stop codon, 5’ UTR, 3’ UTR etc.
 
@@ -562,10 +565,10 @@ stringtie -p 4 -G ./assembly/annotation/Homo_sapiens_chr.gtf -o ./assembly/outpu
 
 ```
 
-You can run the same command for each sample or use the script samples_transcriptassembly1.sh
+You can run the same command for each sample or use the script samples_transcriptassembly1.sh from **the scripts folder in the repository.**
 
 
-#### Merging Transcripts
+#### 4c. Merging Transcripts
 
 Transcripts assembled for all samples can be merged together for further analysis using the following command. This is extremely beneficial when you have hundreds or thousands of samples.
 
@@ -577,11 +580,12 @@ stringtie --merge -p 4 -G ./assembly/annotation/Homo_sapiens_chr.gtf -o ./assemb
 
 ```
 
-Again, you can rest the parameter 'p' to the number of processors in your PC. Also mergelist.txt file is a notepad file containing paths to every GTF file for each sample. It is provided in the tutorial_data folder in the repository.
-the output of this command id stringtie_merged.gtf file.
+Again, you can rest the parameter 'p' to the number of processors in your PC. Also mergelist.txt file is a notepad file containing paths to every GTF file for each sample. It is provided in <u><b>the tutorial_data folder in the repository.</u></b>
+
+The output of this command id stringtie_merged.gtf file.
 
 
-#### Re-evaluating StringTie transcript abundance estimates
+#### 4d. Re-evaluating StringTie transcript abundance estimates
 
 Finally, we redo Stringtie abundance calculations using the newly merged transcripts. This needs to be done to generate count files for each sample.
 
@@ -593,19 +597,20 @@ stringtie -e -p 4 -B -G ./assembly/merged_transcript/stringtie_merged.gtf -o ./q
 
 ```
 
-You can run this for each your samples or you can use the script samples_transcriptassembly2.sh present in the scripts folder of the repository.
+You can run this for each your samples or you can use the script samples_transcriptassembly2.sh present in <u><b>the scripts folder of the repository.</u></b>
 
+--------------------------------------------------------------------
 
-### Reestimating Gene Counts from Assembled RNA-Seq reads <a name="gene_counts"></a>
+### 5. Reestimating Gene Counts from Assembled RNA-Seq reads <a name="gene_counts"></a>
 
 We have assembled our RNA-Seq alignment into potential transcripts and we have also generated read count tables at both gene and transcript levels.
 The files are gene_counts.csv and transcript_counts.csv.
 
 We ***WOULD*** (actually, we aren't) be using the gene_count_matrix.csv file for differential gene expression analysis. A closer look at the contents of gene_count_matrix.csv file reveals that we have 79,000+ entries.
-Most are labelled with ENSEMBL identifiers 'ENSG' but many of them have a unknown identifier or label starting with 'MSTRG'. MSTRG IDs are default names assigned by Stringtie while merging
-transcript gtfs. 
 
-If we were to use this data for further analysis and eliminate entries that do not have ENSEMBL identifiers we would be left with about ----- gene entries.
+Most are labelled with ENSEMBL identifiers 'ENSG' but many of them have a unknown identifier or label starting with 'MSTRG'. MSTRG IDs are default names assigned by Stringtie while merging transcript gtfs. 
+
+If we were to use this data for further analysis and eliminate entries that do not have ENSEMBL identifiers we might miss out on valuable gene entries.
 
 Here is where IsoformSwitchAnalyzeR comes to our aid. 
 
@@ -615,41 +620,45 @@ IsoformSwitchAnalyzeR is an R package that is designed to identify isoform switc
 It accepts input data from tools such as Cufflinks, StringTie, Kallisto and Salmon.
 
 Each gene produces different transcripts or isoforms with the help of Alternative Splicing, alternative transcription start sites (aTSS), and alternative transcription 
-termination sites (aTTS). Many of these isoforms tend to have different functions. Isoform switching is 'the differential usage of isoforms under different conditions' and since isoforms tend
-to differ in function, their altered usage can have a significant biological impact.
+termination sites (aTTS). 
 
-Different isoform usage is commonly observed in normal biological processes such as cell development, pluripotency and apoptosis but their dysregulated use can be responsible for conditions
-like cancer. 
+Many of these isoforms tend to have different functions. Isoform switching is 'the differential usage of isoforms under different conditions' and since isoforms tend to differ in function, their altered usage can have a significant biological impact.
+
+Different isoform usage is commonly observed in normal biological processes such as cell development, pluripotency and apoptosis but their dysregulated use can be responsible for conditions like cancer. 
 
 IsoformSwitchAnalyzeR helps conduct genome-wide analysis of specific types of alternative splicing and also predicts functional consequences of isoform switches.
-You can learn more about it here https://bioconductor.org/packages/release/bioc/vignettes/IsoformSwitchAnalyzeR/inst/doc/IsoformSwitchAnalyzeR.html (https://bioconductor.org/packages/release/bioc/vignettes/IsoformSwitchAnalyzeR/inst/doc/IsoformSwitchAnalyzeR.html)
+
+You can learn more about it here https://bioconductor.org/packages/release/bioc/vignettes/IsoformSwitchAnalyzeR/inst/doc/IsoformSwitchAnalyzeR.html 
 
 #### Using IsoformSwitchAnalyzeR to rescue StringTie Annotation
 However, we will not be conducting an Isoform Switch Analysis. IsoformSwitchAnalyzeR has this novel algorithm that helps 'rescue StringTie annotation and extract gene count matrix.' 
 
-The authors of IsoformSwitchAnalyzeR highlight that StringTie provides its own gene ids 'MSTRG.XXXX' for many genes. These are sets of overlapping transcripts and are used instead of known 
-'reference gene ids' because:
-- For all genes, when a 'novel' transcript is identified the'MSTRG.XXXX' gene id is used.
-- In some cases, a novel transcript hasn't been provided a 'reference gene id' yet.
-- Some genes have been “merged” due to genomic overlap of transcripts from the different genes.
+The authors of IsoformSwitchAnalyzeR highlight that StringTie provides its own gene ids 'MSTRG.XXXX' for many genes. These are sets of overlapping transcripts and are used instead of known 'reference gene ids' because:
+* For all genes, when a 'novel' transcript is identified the'MSTRG.XXXX' gene id is used.
+* In some cases, a novel transcript hasn't been provided a 'reference gene id' yet.
+* Some genes have been “merged” due to genomic overlap of transcripts from the different genes.
 
-IsoformSwitchAnalyzeR 's rescue algorithm ensures that 'MSTRG.XXXX' ids are replaced with 'reference gene ids' wherever annotation for the same is available. The result is that only novel genes, those
-are StringTie identified transcripts that do not overlap with any annotated genes, will still have 'MSTRG.XXXX' ids. 
+IsoformSwitchAnalyzeR 's rescue algorithm ensures that 'MSTRG.XXXX' ids are replaced with 'reference gene ids' wherever annotation for the same is available. The result is that only novel genes, those are StringTie identified transcripts that do not overlap with any annotated genes, will still have 'MSTRG.XXXX' ids. 
 
 This helps save data from tens to thousands of genes and can be used for further downstream analysis.
 
 Please install IsoformSwitchAnalyzeR in RStudio befoe you proceed to the commands.
 
-#### COMMANDS
+```r
+BiocManager::install(IsoformSwitchAnalyzeR)
+```
+
+**COMMANDS**
 
 We begin by loading the necessary libraries, reading in the StringTie data, creating a design matrix and combining this into a switchAnalyzeRlist object. The input data will be the 'ballgown' folder that we created while using StringTie. 
+
 It has exon-level, intron-level as well as transcript-level expression measurements for each sample saved in a separate folder.
 
 The switchAnalyzeRlist object is created to specifically contain and summarize all relevant information about the isoforms involved in isoform switches.
 
 Further the gene count matrix is extracted from the switchAnalyzeRlist object.
 
-*Set the working directory to ----. Also remember to change the paths to the files in the commands below so as to suit your requirements.*
+*Set the working directory to dge_analysis. Also remember to change the paths to the files in the commands below so as to suit your requirements.*
 
 ```r
 # Loading libraries
@@ -685,6 +694,7 @@ write.csv(geneCountMatrix,"rna_seq_dge_analysis/dge_analysis/gene_count_matrix_n
 
 The 'gene_count_matrix_new.csv' will be used for differential gene analysis with DeSeq2. 
 
+-----------------------------------------------------------------
 
 ### Differential Gene Expression Analysis <a name="diff_gene"></a>
 

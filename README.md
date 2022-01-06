@@ -774,8 +774,8 @@ A generalized linear model would look like this:
 
 GLM has three components:
 * Random part: The response variable Y
-* Deterministic part: The predictor/explanatory variables Xi1 to Xik
-* Link function: g(μi) = ηi
+* Deterministic part: The predictor/explanatory variables X<sub>i1</sub> to X<sub>ik</sub>
+* Link function: g(μ<sub>i</sub>) = η<sub>i</sub>
 
 The natural link function for the Negative Binomial is the “log link”, η=log(μ).
 
@@ -1376,7 +1376,7 @@ ggplot(set2_gp_df[0:20,]) +
   # Flip the x and y axes
   coord_flip()
 
-```r
+```
 
 The first two plots show enrichment for first 20 terms. 
 
@@ -1431,7 +1431,7 @@ You can extract terms of your choice from the dataframe (eg: set1_gp_df) and plo
 **[4]** Kim, D., Paggi, J.M., Park, C. et al "**Graph-based genome alignment and genotyping with HISAT2 and HISAT-genotype.**"
         Nat Biotechnol 37, 907–915 (2019). https://doi.org/10.1038/s41587-019-0201-4 [[Research paper](https://www.nature.com/articles/s41587-019-0201-4)]
 
-**[5]** Kovaka S, Zimin AV, Pertea GM, Razaghi R, Salzberg SL, Pertea M. "** Transcriptome assembly from long-read RNA-seq alignments with StringTie2**"
+**[5]** Kovaka S, Zimin AV, Pertea GM, Razaghi R, Salzberg SL, Pertea M. "**Transcriptome assembly from long-read RNA-seq alignments with StringTie2**"
         Genome Biology 20, 278 (2019), doi:10.1186/s13059-019-1910-1  [[Research paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1910-1)]
 
 **[6]** Kevin L Howe, Premanand Achuthan, James Allen, Jamie Allen, Jorge Alvarez-Jarreta, M Ridwan Amode, Irina M Armean, Andrey G Azov, Ruth Bennett, Jyothish Bhai, Konstantinos Billis,
@@ -1441,35 +1441,35 @@ You can extract terms of your choice from the dataframe (eg: set1_gp_df) and plo
         Anne Parker, Andrew Parton, Irina Prosovetskaia, Manoj P Sakthivel, Ahamed I Abdul Salam, Bianca M Schmitt, Helen Schuilenburg, Dan Sheppard, Emily Steed, Michal Szpak, 
         Marek Szuba, Kieron Taylor, Anja Thormann, Glen Threadgold, Brandon Walts, Andrea Winterbottom, Marc Chakiachvili, Ameya Chaubal, Nishadi De Silva, Bethany Flint, Adam Frankish, 
         Sarah E Hunt, Garth R IIsley, Nick Langridge, Jane E Loveland, Fergal J Martin, Jonathan M Mudge, Joanella Morales, Emily Perry, Magali Ruffier, John Tate, David Thybert, 
-        Stephen J Trevanion, Fiona Cunningham, Andrew D Yates, Daniel R Zerbino, Paul Flicek. "** Ensembl 2021.**"
+        Stephen J Trevanion, Fiona Cunningham, Andrew D Yates, Daniel R Zerbino, Paul Flicek. "**Ensembl 2021.**"
         Nucleic Acids Res. 2021, vol. 49(1):884–891 PMID: 33137190.  [[Research paper](https://academic.oup.com/nar/article/49/D1/D884/5952199)]
 
-**[7]** Danecek P, Bonfield JK, Liddle J, Marshall J, Ohan V, Pollard MO, Whitwham A, Keane T, McCarthy SA, Davies RM, Li H. "** Twelve years of SAMtools and BCFtools**"
+**[7]** Danecek P, Bonfield JK, Liddle J, Marshall J, Ohan V, Pollard MO, Whitwham A, Keane T, McCarthy SA, Davies RM, Li H. "**Twelve years of SAMtools and BCFtools**"
         GigaScience (2021) 10(2) giab008 [33590861] PMID: 33590861  [[Research paper](https://pubmed.ncbi.nlm.nih.gov/33590861/)]
 
-**[8]** Vitting-Seerup K, Sandelin A (2019). "** IsoformSwitchAnalyzeR: Analysis of changes in genome-wide patterns of alternative splicing and its functional consequences.**"
+**[8]** Vitting-Seerup K, Sandelin A (2019). "**IsoformSwitchAnalyzeR: Analysis of changes in genome-wide patterns of alternative splicing and its functional consequences.**"
         Bioinformatics. doi: 10.1093/bioinformatics/btz247 [[Research paper](https://academic.oup.com/bioinformatics/article/35/21/4469/5466456)]
 
-**[9]** Love MI, Huber W, Anders S (2014). "** Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2.**"
+**[9]** Love MI, Huber W, Anders S (2014). "**Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2.**"
         Genome Biology, 15, 550. doi: 10.1186/s13059-014-0550-8.  [[Research paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8)]
 
-**[10]** Ignatiadis N, Klaus B, Zaugg J, Huber W (2016). "** Data-driven hypothesis weighting increases detection power in genome-scale multiple testing.**"
+**[10]** Ignatiadis N, Klaus B, Zaugg J, Huber W (2016). "**Data-driven hypothesis weighting increases detection power in genome-scale multiple testing.**"
         Nature Methods. doi: 10.1038/nmeth.3885.   [[Research paper](https://www.nature.com/articles/nmeth.3885)]
 
-**[11]** Carlson M (2019). "** org.Hs.eg.db: Genome wide annotation for Human. R package version 3.8.2. **"
+**[11]** Carlson M (2019). "**org.Hs.eg.db: Genome wide annotation for Human. R package version 3.8.2. **"
 
-**[12]** Stephens, M. (2016). "** False discovery rates: a new deal.**" Biostatistics, 18:2. 10.1093/biostatistics/kxw041   [[Research paper](https://academic.oup.com/biostatistics/article/18/2/275/2557030)]
+**[12]** Stephens, M. (2016). "**False discovery rates: a new deal.**" Biostatistics, 18:2. 10.1093/biostatistics/kxw041   [[Research paper](https://academic.oup.com/biostatistics/article/18/2/275/2557030)]
 
-**[13]** IXie Z, Bailey A, Kuleshov MV, Clarke DJB., Evangelista JE, Jenkins SL, Lachmann A, Wojciechowicz ML, Kropiwnicki E, Jagodnik KM, Jeon M, & Ma’ayan A. "** Gene set knowledge discovery with Enrichr.**"
+**[13]** IXie Z, Bailey A, Kuleshov MV, Clarke DJB., Evangelista JE, Jenkins SL, Lachmann A, Wojciechowicz ML, Kropiwnicki E, Jagodnik KM, Jeon M, & Ma’ayan A. "**Gene set knowledge discovery with Enrichr.**"
         Current Protocols, 1, e90. 2021. doi: 10.1002/cpz1.90 [[Research paper](https://currentprotocols.onlinelibrary.wiley.com/doi/10.1002/cpz1.90)]
 
-**[14]** Kolberg L, Raudvere U, Kuzmin I, Vilo J, Peterson H (2020). "** gprofiler2– an R package for gene list functional enrichment analysis and namespace conversion toolset g:Profiler.**"
+**[14]** Kolberg L, Raudvere U, Kuzmin I, Vilo J, Peterson H (2020). "**gprofiler2– an R package for gene list functional enrichment analysis and namespace conversion toolset g:Profiler.**"
         F1000Research, 9 (ELIXIR)(709). R package version 0.2.1.  [[Research paper](https://f1000research.com/articles/9-709)]
 
-**[15]** Blighe K, Rana S, Lewis M (2021). "** EnhancedVolcano: Publication-ready volcano plots with enhanced colouring and labeling. R package version 1.12.0.**"
+**[15]** Blighe K, Rana S, Lewis M (2021). "**EnhancedVolcano: Publication-ready volcano plots with enhanced colouring and labeling. R package version 1.12.0.**"
         [[Source Code](https://github.com/kevinblighe/EnhancedVolcano)]
 
-**[16]** Wickham H (2016). "** ggplot2: Elegant Graphics for Data Analysis.**" Springer-Verlag New York. ISBN 978-3-319-24277-4 [[Source Code](https://ggplot2.tidyverse.org.)]
+**[16]** Wickham H (2016). "**ggplot2: Elegant Graphics for Data Analysis.**" Springer-Verlag New York. ISBN 978-3-319-24277-4 [[Source Code](https://ggplot2.tidyverse.org.)]
 
 -----------------------------------------------------------------------------------
 

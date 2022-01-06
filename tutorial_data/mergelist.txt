@@ -1,0 +1,6 @@
+./assembly/output/SRR12852623.gtf
+./assembly/output/SRR12852624.gtf
+./assembly/output/SRR12852625.gtf
+./assembly/output/SRR12852626.gtf
+./assembly/output/SRR12852627.gtf
+./assembly/output/SRR12852628.gtf

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+SAMPLES="SRR12852623 SRR12852624 SRR12852625 SRR12852626 SRR12852627 SRR12852628"
+
+for SAMPLE in $SAMPLES; do
+    TrimmomaticSE -phred33 ./data/${SAMPLE}.fastq ./qc/trim_output/${SAMPLE}_trimmed.fastq ILLUMINACLIP:TruSeq3-SE.fa:2:30:10 SLIDINGWINDOW:5:20 MINLEN:40
+
+done

@@ -28,6 +28,7 @@ Let's begin the tutorial with a basic introduction to RNA Sequencing.
      - [Transcriptome assembly of Aligned Reads](#assembly)
      - [Reestimating Gene Counts Matrix](#gene_counts)
      - [Differential Gene Expression Analysis](#diff_gene)
+- [Analysis Results](#results)
 - [Citations](#citations_list)
 - [License](#license_name)
 
@@ -1416,6 +1417,81 @@ You can extract terms of your choice from the dataframe (eg: set1_gp_df) and plo
 <p align="center">
      <b>Custom GProfiler Plot of Gene Enrichment Analysis in SARS-Cov-2 infected samples vs SARS-Cov-2 infected samples treated with Remdesivir. </b>
 </p>
+
+---------------------------------------------------------------------------------------
+
+## Analysis Results <a name="results"></a>
+
+One important thing to note before interpreting the results of this analysis is that this is an exploratory data analysis; we have very few samples and replicates so it wouldn’t be right to jump to conclusions.
+
+However, these results could serve as interesting findings and potential pointers for further research.
+
+Beginning with our **alignment results**, we observed an average of 91-93% overall alignment rate for all our samples. In the merging step in transcriptome assembly, we created a uniform set of transcripts of all samples for easier downstream analysis. Comparing the merged transcripts with known transcripts using gffcompare resulted in high sensitivity scores indicating that Stringtie matches almost all transcripts to known transcripts.
+
+We also observed good precision scores indicating that most transcripts identified by Stringtie are known transcripts and very few are false positives or novel transcripts. In our dataset, gffcompare suggested that 3.1% of the transcripts contributed to novel exons.
+
+Coming to our **visual quality control check**, the [first sample heatmap](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/sample_heatmap1.png) of the count matrix derived  using the shifted logarithm transformation of the data (log2(n + 1)) shows the expression of the first 20 genes in all samples ranked in decreasing order of their average expression.
+
+Our samples form different clusters primarily on the basis of donor from whom the sample was isolated as well as gender of the donor. The first gene ENSG00000254647 codes for Insulin and was found to be highly expressed in the samples from the first donor. This makes sense as the first donor was a female with type 2 diabetes treated with 100-250 IU of insulin per day during COVID treatment.
+
+ENSG00000166710 refers to beta 2 microglobulin which was found to be highly expressed in the COVID-infected islets cells from the second donor but were treated with remdesivir. Beta-2 microglobulin is suggested to be a significant predictor of disease severity in COVID19.
+
+We also observe higher expression of TNF receptor in samples derived from the first donor. Tumor necrosis factor (TNF) is actively involved in inflammation and immunity. 
+IFITM3 (Interferon-induced transmembrane protein 3) is found to be moderately expressed in COVID-infected islets cells from the second donor that were treated with remdesivir. It codes for an antiviral protein that inhibits entry of viral proteins by disrupting intracellular cholesterol homeostasis and preventing viral fusion with host cells.
+
+The [second heatmap](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/sample_heatmap2.png) derived from variance stabilized data most of the variance is determined by difference in origin (donor) of samples as well as sex of the donor. In the samples derived from the female donor, the transcriptomes from SARS-CoV-2-infected cells clearly separate from uninfected counterparts.
+
+Interestingly, uninfected samples as well as infected samples treated with remdesivir from the male donor cluster together which could be attributed to inevitable discrepancies during library preparation or to treatment response.
+
+Our [principal component analysis plot](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/sample_pca.png), again confirms that most variance in our data can be attributed to the difference in the sample origin (i.e. different donors) as well as donor gender.
+
+The **volcano plots** provide a quick visual identification of genes with large fold changes that are also statistically significant. 
+
+When comparing our [SARS-Cov-2 infected samples with Uninfected samples](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set1_enrichrplot1.png), we see the following statistically significant genes (just discussing a few of them):
+ * OAS2: 2'-5'-oligoadenylate synthetase 2 (up-regulated). It encodes essential proteins involved in the innate immune response to viral infection.
+ * CXCL11: C-X-C motif chemokine ligand 11 (up-regulated). This chemokine affects leukocyte activity and is involved in immune function.
+ * MATR3: Matrin-3 (down-regulated). It encodes a nuclear matrix protein and regulates virus-mediated innate immune response.
+ * REG3A: regenerating family member 3 alpha (down-regulated). It encodes a pancreatic secretory protein that may be involved in cell proliferation or differentiation and is observed during pancreatic inflammation.
+
+When comparing our [SARS-Cov-2 infected samples with SARS-Cov-2 infected samples treated with remdesivir](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/set2_volcanoplot.png), we see the following statistically significant genes (just discussing a few of them):
+ * IFI27: Interferon Alpha Inducible Protein 27 (up-regulated). It is involved in innate immune response, has antiviral activity and also affects cell apoptosis.
+ * MX2: MX dynamin like GTPase 2 (up-regulated). It is up-regulated by Interferon and is previously found to have antiviral activity against HIV and SIV-mnd.
+ * MYL6B: myosin light chain 6B (down-regulated). It is involved in smooth muscle contraction and is identified as a potential marker for hepatocellular carcinoma.
+ * ELL3:  Elongation Factor For RNA Polymerase II 3 (down-regulated). It is a protein coding gene and is related to the pathway Tat-mediated elongation of the HIV-1 transcript; TAT is a protein that enhances viral transcription. Downregulation of ELL3 could mean reduced viral replication but this needs to be validated by further research.
+
+Overall, a down-regulation of genes related to pancreas and liver function was observed in SARS-Cov-2 infected cells while genes related to immune function and inflammation were up-regulated. Immune function related genes were up-regulated in remdesivir treated cells as well.
+
+Further during **Gene Ontology analysis**, we observe good hits for COVID-19 related disease terms as well as for general pathways related to viral infection, replication as well as disruption of pancreatic function. 
+
+The plots shown above are not scaled for better resolution, so I would request you to check the original images in the [[images folder](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/tree/main/images)] .
+
+Some noteworthy pathways are:
+
+**COVID-19 Disease Terms**
+ * 500 genes up-regulated by SARS-CoV-2 in human Organoids cells
+ * 500 genes up-regulated by SARS-CoV-2 in human pancreatic organoids
+ * Top 500 up genes for SARS-CoV-2 early infection in human female blood
+ * Genes whose expression is altered by SARS-COV-2 infection
+ * SARS-CoV perturbation; 402 Up Genes in Human bronchial epithelial 2B4 cells
+
+**GO, WIKI, Reactome Disease Terms**
+ * type I interferon signaling pathway
+ * regulation of viral genome replication
+ * tumor necrosis factor superfamily cytokine production
+ * SARS-CoV-2 Innate Immunity Evasion and Cell-specific immune response
+ * OAS antiviral response
+ * Host-pathogen interaction of human corona viruses - MAPK signaling
+ * negative regulation of viral genome replication
+ * triglyceride binding
+ * lipoprotein lipase activity
+
+When comparing SARS-Cov-2 infected samples vs uninfected samples we see increased enrichment for terms such as ‘Type I interferon signalling pathway’, ‘Regulation of viral genome’ , ‘Tumor necrosis factor superfamily cytokine production’ .
+
+When compared to Remdesivir treated samples, similar but less pronounced enrichment of Interferon related terms is seen and terms such as ‘Negative regulation of Viral Genome replication’ are observed indicative of treatment response.
+
+Similar findings have been stated by the authors/ creators of the dataset. Overall transcriptomes of infected islet cells show innate immune response to viral infection and replication and disruption of beta- cell function. 
+
+This suggests that viral infection and resulting interferon activity could contribute to metabolic dysregulation, impaired insulin activity and development of diabetes. However these findings need to be validated by further studies with larger sample sizes.
 
 -------------------------------------------------------------------------------
 ## Citations <a name="citations_list"></a>

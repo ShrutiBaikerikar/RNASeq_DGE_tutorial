@@ -163,7 +163,7 @@ Here is how you can organize your working directory structure:
   │       ├── 2_trim_fastqc/            <- Results of FASTQC for every trimmed sample
   │       ├── 3_trim_output/            <- Output files of Trimmed reads for every sample
   │
-  │    └── ballgown/                    <- Data generated during Stringtie's quantification step; stores transcript quanitifcation data for every sample
+  │    └── quantification/              <- Data generated during Stringtie's quantification step; stores transcript quanitifcation data for every sample
   │  
   │    └── dge_analysis/                <- Folder to store files generated during DESeq2 analysis      
   │       
@@ -663,7 +663,7 @@ IsoformSwitchAnalyzeR 's rescue algorithm ensures that 'MSTRG.XXXX' ids are repl
 
 This helps save data from tens to thousands of genes and can be used for further downstream analysis.
 
-Please install IsoformSwitchAnalyzeR in RStudio befoe you proceed to the commands.
+Please install IsoformSwitchAnalyzeR in RStudio before you proceed to the commands.
 
 ```r
 BiocManager::install(IsoformSwitchAnalyzeR)
@@ -671,7 +671,7 @@ BiocManager::install(IsoformSwitchAnalyzeR)
 
 **COMMANDS**
 
-We begin by loading the necessary libraries, reading in the StringTie data, creating a design matrix and combining this into a switchAnalyzeRlist object. The input data will be the 'ballgown' folder that we created while using StringTie. 
+We begin by loading the necessary libraries, reading in the StringTie data, creating a design matrix and combining this into a switchAnalyzeRlist object. The input data will be the 'quantification' folder that we created while using StringTie. 
 
 It has exon-level, intron-level as well as transcript-level expression measurements for each sample saved in a separate folder.
 
@@ -725,18 +725,18 @@ There are several packages that can be used for Differential Gene Expression Ana
 #### What is DESeq2?
 
 Differential gene expression analysis helps us compare the differences in gene expression between two conditions and these differences can be considered responsible for the biological phenomena we are observing.
-For example, when comparing Diseased vs Normal samples, genes that are expressed in higher/lower quantities in Disease group when compared to the Normal group, could be involved in the disease pathology.
+For example, when comparing Diseased vs Normal samples, genes that are expressed in higher/lower quantities in the Disease group when compared to the Normal group could be involved in the disease pathology.
 
-It is important to quantify these differences and conduct a statistical analysis to ascertain which genes are actually responsible for systematic changes between the conditions and to eliminate those that are responsible
+It is important to quantify these differences and conduct a statistical analysis to ascertain which genes are responsible for systematic changes between the conditions and to eliminate those that are responsible
 for within condition variability. DESeq2 is an R package that tests for differential expression by using negative binomial generalized linear models. 
 
 *What is negative binomial distribution?*
 
-A binomial experiment is one which has a fixed number of independent trials with only two outcomes: success and familar. The probaility of success is constant and a random variable Y indicates the number of successes.
+A binomial experiment has a fixed number of independent trials with only two outcomes: success and failure. The probability of success is constant and a random variable Y indicates the number of successes.
 
 A negative binomial experiment is almost the same except that the number of trials is not fixed and the random variable Y is the number of trials needed to make r successes.
 
-At the moment, we are working with count data - the number of sequence fragments that are assigned to each gene for each sample. Count data comprises of integers (positive or zero) and the variance of the counts increases with the mean. 
+At the moment, we are working with count data - the number of sequence fragments that are assigned to each gene for each sample. Count data comprises integers (positive or zero) and the variance of the counts increases with the mean. 
 
 The count values tend to aggregate towards a small bunch of the range leading to a positive skew distribution or long right tail. Count data is modeled with either a Poisson or a negative binomial distribution because:
 * It has zero or positive integers.
@@ -781,7 +781,7 @@ GLM has three components:
 The natural link function for the Negative Binomial is the “log link”, η=log(μ).
 
 #### How does DESeq2 work?
-DESeq2 uses the negative binomial distribution with a slightly more stringent approach compared to other methods but maintaining good balance between sensitivity and specificity (reducing both false positives and false negatives).
+DESeq2 uses the negative binomial distribution with a slightly more stringent approach compared to other methods but still maintaining good balance between sensitivity and specificity (reducing both false positives and false negatives).
 DESeq2 performs differential expression analysis in the following manner:
 * It calculates normalization factors for sequencing depth adjustment. This accounts for differences in library size.
 * The dispersion parameters (α) in negative binomial distribution are estimated. 
@@ -900,7 +900,7 @@ dds <- DESeq(dds)
 ```
 
 #### 6f. Visualization to assess data quality
-Before, we move to our results, lets examine our data via plots. To test for differential expression, we operate on raw counts and use discrete distributions. 
+Before, we move to our results, let's examine our data via plots. To test for differential expression, we operate on raw counts and use discrete distributions. 
 
 However for other downstream analyses such as for visualization or clustering ,it might be useful to work with transformed versions of the count data.
 
@@ -1212,7 +1212,7 @@ Since, it is a web-based tool, it is important to check for 'Connection is Live'
 
 To perform enrichment analysis, we first set our server as 'Enrichr' since we are working on human genes. Next we get gene symbols of our DE genes in both sets: SCov2 vs Uninfected and SCov2 vs SCov2_R.
 
-Set the database to 'COVID-19_Related_Gene_Sets_2021'. We perform separate enrichment analysis for each set using the enrichr() function. Finally we plot our results using plotEnrich() function.
+Set the database to 'COVID-19_Related_Gene_Sets_2021'. We perform separate enrichment analysis for each set using the enrichr() function. Finally, we plot our results using plotEnrich() function.
 
 ```r
 
@@ -1290,7 +1290,7 @@ Next, we perform the enrichment analysis using the gost() function. Here we set 
 * P-value threshold: user_threshold = 0.05
 * Multiple testing correction method: correction_method = "fdr"
 
-Our results are stored in a dataframe. To plot our results, we convert the p-values to a negative log10 scale. Finally we plot the first twenty entries in our results dataframe using ggplot2. Note that these are first twenty entries, they are not ranked by p-values.
+Our results are stored in a dataframe. To plot our results, we convert the p-values to a negative log10 scale. Finally, we plot the first twenty entries in our results dataframe using ggplot2. Note that these are first twenty entries, they are not ranked by p-values.
 
 Lastly, you can extract terms of your choice, that are relevant to your current study, and plot results accordingly.
 
@@ -1430,18 +1430,18 @@ Beginning with our **alignment results**, we observed an average of 91-93% overa
 
 We also observed good precision scores indicating that most transcripts identified by Stringtie are known transcripts and very few are false positives or novel transcripts. In our dataset, gffcompare suggested that 3.1% of the transcripts contributed to novel exons.
 
-Coming to our **visual quality control check**, the [first sample heatmap](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/sample_heatmap1.png) of the count matrix derived  using the shifted logarithm transformation of the data (log2(n + 1)) shows the expression of the first 20 genes in all samples ranked in decreasing order of their average expression.
+Coming to our **visual quality control check**, the [first sample heatmap](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/sample_heatmap1.png) of the count matrix that was derived using the shifted logarithm transformation of the data (log2(n + 1)) shows the expression of the first 20 genes in all samples ranked in decreasing order of their average expression.
 
-Our samples form different clusters primarily on the basis of donor from whom the sample was isolated as well as gender of the donor. The first gene ENSG00000254647 codes for Insulin and was found to be highly expressed in the samples from the first donor. This makes sense as the first donor was a female with type 2 diabetes treated with 100-250 IU of insulin per day during COVID treatment.
+Our samples form different clusters primarily based on the donor from whom the sample was isolated as well as the gender of the donor. The first gene ENSG00000254647 codes for Insulin and was found to be highly expressed in the samples from the first donor. This makes sense as the first donor was a female with type 2 diabetes treated with 100-250 IU of insulin per day during COVID treatment.
 
 ENSG00000166710 refers to beta 2 microglobulin which was found to be highly expressed in the COVID-infected islets cells from the second donor but were treated with remdesivir. Beta-2 microglobulin is suggested to be a significant predictor of disease severity in COVID19.
 
-We also observe higher expression of TNF receptor in samples derived from the first donor. Tumor necrosis factor (TNF) is actively involved in inflammation and immunity. 
-IFITM3 (Interferon-induced transmembrane protein 3) is found to be moderately expressed in COVID-infected islets cells from the second donor that were treated with remdesivir. It codes for an antiviral protein that inhibits entry of viral proteins by disrupting intracellular cholesterol homeostasis and preventing viral fusion with host cells.
+We also observe a higher expression of TNF receptor in samples derived from the first donor. Tumor necrosis factor (TNF) is actively involved in inflammation and immunity. 
+IFITM3 (Interferon-induced transmembrane protein 3) is found to be moderately expressed in COVID-infected islets cells from the second donor that were treated with remdesivir. It codes for an antiviral protein that inhibits the entry of viral proteins by disrupting intracellular cholesterol homeostasis and preventing viral fusion with host cells.
 
-The [second heatmap](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/sample_heatmap2.png) derived from variance stabilized data most of the variance is determined by difference in origin (donor) of samples as well as sex of the donor. In the samples derived from the female donor, the transcriptomes from SARS-CoV-2-infected cells clearly separate from uninfected counterparts.
+The [second heatmap](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/sample_heatmap2.png) is derived from variance stabilized data. Most of the variance is determined by the difference in origin (donor) of samples as well as sex of the donor. In the samples derived from the female donor, the transcriptomes from SARS-CoV-2-infected cells clearly separate from uninfected counterparts.
 
-Interestingly, uninfected samples as well as infected samples treated with remdesivir from the male donor cluster together which could be attributed to inevitable discrepancies during library preparation or to treatment response.
+Interestingly, uninfected samples as well as infected samples treated with remdesivir from the male donor cluster together and this could be attributed to inevitable discrepancies during library preparation or to treatment response.
 
 Our [principal component analysis plot](https://github.com/ShrutiBaikerikar/RNASeq_DGE_tutorial/blob/main/images/sample_pca.png), again confirms that most variance in our data can be attributed to the difference in the sample origin (i.e. different donors) as well as donor gender.
 
@@ -1487,9 +1487,9 @@ Some noteworthy pathways are:
 
 When comparing SARS-Cov-2 infected samples vs uninfected samples we see increased enrichment for terms such as ‘Type I interferon signalling pathway’, ‘Regulation of viral genome’ , ‘Tumor necrosis factor superfamily cytokine production’ .
 
-When compared to Remdesivir treated samples, similar but less pronounced enrichment of Interferon related terms is seen and terms such as ‘Negative regulation of Viral Genome replication’ are observed indicative of treatment response.
+When compared to Remdesivir treated samples, similar but less pronounced enrichment of Interferon related terms is seen and terms such as ‘Negative regulation of Viral Genome replication’ are observed and these are indicative of treatment response.
 
-Similar findings have been stated by the authors/ creators of the dataset. Overall transcriptomes of infected islet cells show innate immune response to viral infection and replication and disruption of beta- cell function. 
+Similar findings have been stated by the authors/contributors of the dataset. Overall transcriptomes of infected islet cells show innate immune response to viral infection and replication and disruption of beta-cell function. 
 
 This suggests that viral infection and resulting interferon activity could contribute to metabolic dysregulation, impaired insulin activity and development of diabetes. However these findings need to be validated by further studies with larger sample sizes.
 

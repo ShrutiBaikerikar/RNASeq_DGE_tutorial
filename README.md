@@ -1,15 +1,15 @@
 # RNA-SEQ Differential Gene Expression Analysis of COVID-19 Infected Pancreas Cells
 
-Next Generation Sequencing technologies promote research in genome wide expression dataand provide high resolution and precise measurements of transcript levels to study gene expression. RNA-Sequencing has become one of the main choices to measure expression levels.
+Next Generation Sequencing technologies promote research in genome wide expression data and provide high resolution and precise measurements of transcript levels to study gene expression. RNA-Sequencing has become one of the main choices to measure expression levels.
 It has many applications such as 'de novo' transcriptome assembly, study of methylation patterns, examining single nucleotide variants, study of alternative splicing etc.
 
-Differential Gene Expression is one of the most common techniques used in downstream analysis of RNA-Seq data. It helps us identify which genes may be under/over-expressed in specific conditions when compared to reference/normal conditions. And these genes whose expression are significantly altered could be the ones contributing to the biological phenomea or disease that we are studying.
+Differential Gene Expression is one of the most common techniques used in downstream analysis of RNA-Seq data. It helps us identify which genes may be under/over-expressed in specific conditions when compared to reference/normal conditions. And these genes whose expressions are significantly altered could be the ones contributing to the biological phenomenon or disease that we are studying.
 
 In this tutorial, we will be going over a general workflow for Differential Gene Expression using RNA Sequencing data. While these are the most common steps involved in DGE analysis, there are a few things you must keep in mind:
-* There are many tools available for each step of DGE analysis. You can choose any of them and this choice is heavily influenced by type of data, organism, sample number, statiscal   requirements as well as goals of research/ analysis.
+* There are many tools available for each step of DGE analysis. You can choose any of them and this choice is heavily influenced by the type of data, organism, sample number, statistical requirements as well as goals of research/ analysis.
 * RNA Sequencing data analysis is not limited to identifying differential genes alone; it has many applications and these require separate workflows.
-* The tools used in this tutorial help analyse the chose dataset but this may not be the same for you. You may have to choose separate tools for your RNA-Seq data.
-* When working with large number of samples, it is advisable to work on a high performance cluster or utilise cloud services.
+* The tools used in this tutorial help analyse the chosen dataset but this may not be the same for you. You may have to choose separate tools for your RNA-Seq data.
+* When working with a large number of samples, it is advisable to work on a high performance cluster or utilise cloud services.
 
 Let's begin the tutorial with a basic introduction to RNA Sequencing.
 
@@ -37,15 +37,15 @@ Let's begin the tutorial with a basic introduction to RNA Sequencing.
 ### What is RNA Sequencing? <a name="general_intro"></a>
 
 RNA Sequencing is a bundle of experimental (wet-lab) and computational techniques that help determine the identity and abundance of RNA sequences in biological samples. 
-It provides access to the transcriptome – complete set of transcripts present in a cell at a given developmental state or physiological condition.
+It provides access to the transcriptome – a complete set of transcripts present in a cell at a given developmental stage or physiological condition.
 
-It has several advantages over earlier technologies such as microarrays: high-throughput, increased sensitivity that provides minute details of transcriptional features and detection of novel transcripts, gene models and small noncoding RNA species.
+It has several advantages over earlier technologies such as microarrays: high-throughput, increased sensitivity that provides minute details of transcriptional features and detection of novel transcripts, gene models, and small noncoding RNA species.
 
 In the wet-lab procedures, RNA is isolated from freshly dissected or frozen cells or tissue samples. Quality control practices are integrated to check for degradation, purity and quantity.
 
-The quality-checked total RNA is used for library preparation where RNAs in the sample are converted to cDNA (complementary DNA) by reverse transcription. cDNAs are more stable and amenable to the sequencing technology. The libraries are then to sequencing facilities where different sequencing protocols are used depending on the platform.
+The quality-checked total RNA is used for library preparation where RNAs in the sample are converted to cDNA (complementary DNA) by reverse transcription. cDNAs are more stable and amenable to sequencing technology. The libraries are then to sequencing facilities where different sequencing protocols are used depending on the platform.
 
-The result of sequencing are raw reads which are further analysed with bioinformatic and computational techniques. In the next section, we will go over the different steps involved in the computational aspect of RNA-Seq analysis. 
+The result of sequencing is raw reads which are further analysed with bioinformatics and computational techniques. In the next section, we will go over the different steps involved in the computational aspect of RNA-Seq analysis. 
 
 ### What are the general steps involved in RNA Sequencing Data Analysis?
 
@@ -99,25 +99,25 @@ This study was conducted by Müller and colleagues involving Ulm University Medi
 
 ***Citation**: Müller JA, Groß R, Conzelmann C, Krüger J, Merle U, Steinhart J, Weil T, Koepke L, Bozzo CP, Read C, Fois G, Eiseler T, Gehrmann J, van Vuuren J, Wessbecher IM, Frick M, Costa IG, Breunig M, Grüner B, Peters L, Schuster M, Liebau S, Seufferlein T, Stenger S, Stenzinger A, MacDonald PE, Kirchhoff F, Sparrer KMJ, Walther P, Lickert H, Barth TFE, Wagner M, Münch J, Heller S, Kleger A. **SARS-CoV-2 infects and replicates in cells of the human endocrine and exocrine pancreas.** Nat Metab. 2021 Feb;3(2):149-165. doi: 10.1038/s42255-021-00347-1. Epub 2021 Feb 3. PMID: 33536639.*
 
-COVID was initially considered an exclusive lung disease. However, as the infection spread and cases increased, evidences from clinical and experimental studies show that the virus damages other organs such as kidneys, heart, brain, gastrointestinal and endocrine organs.
+COVID was initially considered an exclusive lung disease. However, as the infection spread and cases increased, pieces of evidence from clinical and experimental studies show that the virus damages other organs such as kidneys, heart, brain, gastrointestinal and endocrine organs.
 
-In this study, the researchers focused on SARS-Cov-2 infection in the pancreas. The pancreas is an organ located in the abdomen that aids in conversion of food to energy. It has:
+In this study, the researchers focused on SARS-Cov-2 infection in the pancreas. The pancreas is an organ located in the abdomen that aids in the conversion of food to energy. It has:
  * Exocrine function: It releases digestive enzymes in the small intestine to help break down the food into fats, carbohydrates and proteins.
  * Endocrine function: It releases hormones such as insulin and glucagon into the bloodstream that helps maintain optimal blood sugar levels.
 
 Multiple studies showed a connection between COVID infection and poor pancreatic function. 
- * Pre-existing diabetes increased the risk of developing SARS-Cov-2 infection; it required intensive treatment and was associated with increasing mortality.
- * SARS-Cov-2 infection affected the exocrine function of the pancreas leading to pancreatitis (severe inflammation of pancreas), pancreatic enlargement and abnormal levels of    digestive enzymes in the patients.
- * Increased blood sugar levels was observed in patients with type2 diabetes and SARS-Cov-2 infection
+ * Pre-existing diabetes increased the risk of developing SARS-Cov-2 infection; it required intensive treatment and was associated with increased mortality.
+ * SARS-Cov-2 infection affected the exocrine function of the pancreas leading to pancreatitis (severe inflammation of the pancreas), pancreatic enlargement and abnormal levels of digestive enzymes in the patients.
+ * Increased blood sugar levels were observed in patients with type2 diabetes and SARS-Cov-2 infection
  * Ketoacidosis (increase in ketone levels due to low insulin levels which makes the blood acidic) was observed in diabetic and non-diabetic patients with SARS-Cov-2 infection
  * New onset of type I diabetes in the absence of autoantibodies following SARS-Cov-2 infection was observed. 
 
-SARS-Cov-2 might trigger beta-cell injury (cells responsible for production of insulin) either by disrupting immune function or by directly interrupting beta cell function.
-The researchers pointed out that several cellular factors or proteins expressed on target cells could be responsible for entry of SARS-Cov-2 in pancreatic cells that lead to subsequent destruction. These factors include:
-* **angiotensin-converting enzyme 2 (ACE2)**: protein that affects blood sugar levels and blood pressure and it also serves as a receptor for SARS-Cov-2 viral entry.
-* **transmembrane serine protease 2 (TMPRSS2)** : protein that is expressed on cells of multiple organs that assists in breakdown of proteins which has multiple implications in body functions such as immune function and allergies, development of prostate cancer and influencing exocrine function of the pancreas. TMPRSS2 also assists in viral entry and spread.
+SARS-Cov-2 might trigger beta-cell injury (cells responsible for the production of insulin) either by disrupting immune function or by directly interrupting beta cell function.
+The researchers pointed out that several cellular factors or proteins expressed on target cells could be responsible for the entry of SARS-Cov-2 in pancreatic cells that lead to subsequent destruction. These factors include:
+* **angiotensin-converting enzyme 2 (ACE2)**: a protein that affects blood sugar levels and blood pressure and it also serves as a receptor for SARS-Cov-2 viral entry.
+* **transmembrane serine protease 2 (TMPRSS2)** : a protein that is expressed on cells of multiple organs that assists in the breakdown of proteins which has multiple implications in body functions such as immune function and allergies, development of prostate cancer and influencing the exocrine function of the pancreas. TMPRSS2 also assists in viral entry and spread.
 
-To examine the possible mechanism of viral entry and eventual disturbance of pancreatic function, the researchers conducted the multiple experimental studies; however, we will be focussing on RNA sequencing analysis on uninfected and infected (with or without remdesivir), cultured human islets from two donors utilised in the above mentioned study. Expression profiling libraries were sequenced on a HiSeq 4000 instrument (Illumina) in 50-bp, single-end mode.
+To examine the possible mechanism of viral entry and eventual disturbance of pancreatic function, the researchers conducted multiple experimental studies; however, we will be focussing on RNA sequencing analysis on uninfected and infected (with or without remdesivir), cultured human islets from two donors utilised in the above-mentioned study. Expression profiling libraries were sequenced on a HiSeq 4000 instrument (Illumina) in 50-bp, single-end mode.
 
 ---------------------------------------------------------------------------------
 ### Installation of Packages <a name="installation"></a>
@@ -150,22 +150,22 @@ Here is how you can organize your working directory structure:
   │       ├── 2_output/                 <- Alignment files generated from HISAT2 (.SAM)
   │       ├── 3_input_reads/            <- Trimmed and QC checked input reads for each sample for genome alignment (.FASTQ)
   │   
-  │    └── assembly/                     <- Data generated during transcriptome assembly steps
+  │    └── assembly/                    <- Data generated during transcriptome assembly steps
   │       ├── 1_annotation/             <- Folder to store Genome annotation file (.GTF/.GFF)
   │       ├── 2_merged_transcripts/     <- Data generated during stringtie merge_transcript step
   │       ├── 3_output/                 <- Folder to store transcriptome assembly output files (.GTF)
   │       ├── 4_sorted_bam_reads/       <- Folder to store sorted BAM input files for transcriptome assembly (.BAM)
   │
-  │    └── data/                         <- Location of input  RNAseq data
+  │    └── data/                        <- Location of input  RNAseq data
   │  
-  │    └── qc/                           <- Data generated during quality control and pre-processing steps
+  │    └── qc/                          <- Data generated during quality control and pre-processing steps
   │       ├── 1_fqc_results/            <- Results of FASTQC for each sample
   │       ├── 2_trim_fastqc/            <- Results of FASTQC for every trimmed sample
   │       ├── 3_trim_output/            <- Output files of Trimmed reads for every sample
   │
-  │    └── ballgown/                     <- Data generated during Stringtie's quantification step; stores transcript quanitifcation data for every sample
+  │    └── ballgown/                    <- Data generated during Stringtie's quantification step; stores transcript quanitifcation data for every sample
   │  
-  │    └── dge_analysis/                 <- Folder to store files generated during DESeq2 analysis      
+  │    └── dge_analysis/                <- Folder to store files generated during DESeq2 analysis      
   │       
    
 ``` 
@@ -247,7 +247,7 @@ fastq-dump SRR12852628
 
 ## Differential Gene Expression Analysis from RNA Sequencing Data - Workflow <a name="workflow"></a>
 
-Now, we will begin our data analysis. One important thing to note is that this is an exploratory data analysis; the number of samples/ replicates in this dataset are small. They are great to find some new leads on how COVID-19 infection affects pancreatic cell functions and diabetes onset but we definitely need larger number of samples to make definitive conclusions.
+Now, we will begin our data analysis. One important thing to note is that this is an exploratory data analysis; the number of samples/replicates in this dataset are small. They are great to find some new leads on how COVID-19 infection affects pancreatic cell functions and diabetes onset but we definitely need a larger number of samples to make definitive conclusions.
 Nevertheless, the aim of this tutorial is to give you a general idea of DGE RNA Seq analysis and this dataset helps achieve just that.
 Lets's begin our analysis with quality control of our raw RNA-Seq reads.
 
@@ -340,7 +340,7 @@ This is acceptable for RNA-Sequencing; a non-uniform distribution for the first 
 Random hexamer primers are a mix of oligonucleotides representing hexamer sequences that are attached to the single stranded RNA for extension by reverse transcription. 
 
 While this process is intended to be random, multiple studies have shown that random hexamer priming introduces a bias in the nucleotide composition at the start of the reads.
-This affects the expression estimates of genes and isoforms and the also the resulting sequence coverage of the transcripts is not uniform.
+This affects the expression estimates of genes and isoforms. Also, the resulting sequence coverage of the transcripts is not uniform.
 
 In most cases, this does not affect downstream analyses.
 <p> </br> </p>
@@ -352,7 +352,7 @@ In most cases, this does not affect downstream analyses.
      <b>FastQC Report: Per sequence GC content plot for sample SRR12852623 </b>
 </p>
 
-The ‘Per Sequence GC content’ average GC content over all sequences (indicated as red line) and compares it modelled normal distribution of GC content. 
+The ‘Per Sequence GC content’ plots average GC content over all sequences (indicated as red line) and compares it modelled normal distribution of GC content. 
 
 In a normal random library, a roughly normal GC content would be observed that corresponds to overall GC content of the genome of that particular organism. Since the original GC content is not known, a model of the GC content is developed based on the reference data (indicated as a blue line).
 
@@ -399,17 +399,17 @@ After conducting quality checks, multiple pre-processing steps can be conducted 
 This assists in better alignment of the reads to the genome.
 
 These steps include:
-* **Filtering**: You can filter reads based on their quality. Average read quality is calculated and if it falls below the user-defined threshold that read is dropped from further analysis. In case of Paired End reads, if the mean quality of either of the reads drops below the given threshold, the read pair is dropped from further analysis.
+* **Filtering**: You can filter reads based on their quality. Average read quality is calculated and if it falls below the user-defined threshold that read is dropped from further analysis. In the case of Paired End reads, if the mean quality of either of the reads drops below the given threshold, the read pair is dropped from further analysis.
 * **Trimming**: Instead of dropping entire reads or read pairs from further analysis, you can trim low quality bases from a given read. There are several ways to trim a read:
    * *Trimming from either end*: Starting from either 3’ or 5’ end, bases are trimmed if their quality falls below the user-defined threshold. If the trimmed reads fall below a user-defined length, they can be filtered.
    * *Trimming using a sliding window approach*: Instead of examining the quality of one base at a time, you can define a length of a search window and examine the mean quality of bases in that window. If the mean quality is above the given threshold, the window slides further to examine the next set of bases.</br>
-Sliding the window from the 5′ end keeps the beginning of the read until the quality falls below the defined threshold, while sliding from the 3′ end cuts until it reaches a window with good enough quality. 
-The window size is an essential parameter that needs to be tuned; very small window size may lead to a stringent check and lead to loss of reads.
-   * *Trimming by sum method*: This is also known as BWA quality trimming. The read is scanned from the 3’ end, the quality of each base is compared to the user defined threshold and the difference is summed up. The read is trimmed at the point where the ‘summed up difference’ is the highest.
-* **Removal of Ambiguous Bases**: If a base is not identified during sequencing, it is indicated as a N. Higher number of Ns in the read should be removed to avoid false mapping and incorrect transcriptome assemblies.
+Sliding the window from the 5′ end keeps the beginning of the read until the quality falls below the defined threshold while sliding from the 3′ end cuts until it reaches a window with good enough quality. 
+The window size is an essential parameter that needs to be tuned; a very small window size may lead to a stringent check and lead to loss of reads.
+   * *Trimming by sum method*: This is also known as BWA quality trimming. The read is scanned from the 3’ end, the quality of each base is compared to the user-defined threshold and the difference is summed up. The read is trimmed at the point where the ‘summed up difference’ is the highest.
+* **Removal of Ambiguous Bases**: If a base is not identified during sequencing, it is indicated as an N. Higher number of Ns in the read should be removed to avoid false mapping and incorrect transcriptome assemblies.
 * **Removal of Adapters**: Adapters are short, known sequences of oligonucleotides that are used to extract or fish out DNA sequences of interest. Other tags such as primers and multiplexing identifiers may also be attached to the reads.
-These need to be removed prior to further analysis. However, removal of adapter content can present several hurdles.</br>
-Like any other part of the read, these tags can undergo sequencing errors like mismatches, indels and ambiguous bases. When sequencing small-RNAs, reads can run into a ‘read-through’ situation where the reads extend into the adapter and 3’ end adapter can be partial.</br>
+These need to be removed before further analysis. However, the removal of adapter content can present several hurdles.</br>
+Like any other part of the read, these tags can undergo sequencing errors like mismatches, indels and ambiguous bases. When sequencing small-RNAs, reads can run into a ‘read-through’ situation where the reads extend into the adapter and the 3’ end adapter can be partial.</br>
 Trimming tools overcome these challenges by examining the reads for known adapter content, aligning the portions of the reads that partially match these adapter sequences and then trimming the matched portions.
 * **Examining Read Length**: Read length distribution gives us an idea of how useful the reads are for further steps such as genome alignment, transcriptome assembly and detection of splice isoforms. Very short reads, resulting from trimming and adapter removal, map unambiguously to the genome and hence can be removed from further analysis.</br>
 
@@ -433,7 +433,7 @@ In this command, the options are:
 * SLIDINGWINDOW:5:20 : indicates that a sliding window of 5 bases is to be used and reads are to be trimmed if quality of the window drops below 20
 * MINLEN:40 : indicates that minimum read length should be 40 after trimming
 
-You have to run the above mentioned commmand for each of your samples: SRR12852624, SRR12852625 ...etc; just replace the name of the sample. Or you could run the following bash script to process all samples together
+You have to run the above-mentioned commmand for each of your samples: SRR12852624, SRR12852625 ...etc; just replace the name of the sample. Or you could run the following bash script to process all samples together.
 
 ```bash
 #!/bin/bash
@@ -456,7 +456,7 @@ fastqc ./qc/trim_output/*.fastq -o ./qc/trim_fastqc
 
 ```
 
-Open the fastqc html for each sample. After running FASTQC again on the trimmed reads, we observe no significant changes in the reports except for ‘Sequence Length distribution’ plot. After trimming, reads are likely to be of different lengths.
+Open the FASTQC html for each sample. After running FASTQC again on the trimmed reads, we observe no significant changes in the reports except for ‘Sequence Length distribution’ plot. After trimming, reads are likely to be of different lengths.
 
 -----------------------------------------------------------------
 
@@ -483,11 +483,11 @@ Additionally, the graph-based index captures a wide representation of genetic va
 
 The basic approach of the aligners is ‘seed and extend’ which involves:
 1. identifying segments of reads of defined lengths (seeds) that precisely map to a given location in the genome. Seed matches can be exact or tolerate mismatches.
-2. extend the reads in both directions to map rest of the read or maximum mappable length
+2. extend the reads in both directions to map the rest of the read or maximum mappable length
 
-HISAT2 maps longer part of the read that maps to the genome contiguously using the global index. Once this is mapped, it helps to identify the relevant local index.  HISAT2 can usually align the remaining part of the read within a single local index rather than searching across the whole genome.
+HISAT2 maps the longer part of the read that maps to the genome contiguously using the global index. Once this is mapped, it helps to identify the relevant local index.  HISAT2 can usually align the remaining part of the read within a single local index rather than searching across the whole genome.
 
-You can download and install HISAT2 from http://daehwankimlab.github.io/hisat2/download/ . Additionally, download the reference genome index (H.sapiens GRCh38 genome) given by HISAT2 developers so as to save time.
+You can download and install HISAT2 from http://daehwankimlab.github.io/hisat2/download/ . Additionally, download the reference genome index (H.sapiens GRCh38 genome) given by HISAT2 developers to save time.
 
 Unzip and save the downloaded ‘genome’ index in the index folder under the alignment directory. 
 
@@ -513,11 +513,11 @@ You have to run this command for each sample by changing the sample names. Alter
 
 ### 4. Transcriptome Assembly with Aligned RNA-Seq reads <a name="assembly"></a>
 
-Transcriptome assembly is performed to obtain full-length transcripts based on the sequence reads. DNA sequence of one or more genes is transcribed into RNA and this is referred to as RNA transcript. A mature RNA transcript comprises of a combination of exons (protein coding sequences).
+Transcriptome assembly is performed to obtain full-length transcripts based on the sequence reads. The DNA sequence of one or more genes is transcribed into RNA and this is referred to as RNA transcript. A mature RNA transcript comprises a combination of exons (protein-coding sequences).
 
-Transcriptome assembly is different from genome assembly. Genome assembly generally has uniform read coverage , making exceptions for sequencing and library preparation biases. A deviation from uniform coverage could indicate presence of repeats.
+Transcriptome assembly is different from genome assembly. Genome assembly generally has uniform read coverage, making exceptions for sequencing and library preparation biases. A deviation from uniform coverage could indicate the presence of repeats.
 
-But, in transcriptome assembly or RNA-seq data, the number of transcripts between genes or various isoforms of same gene could vary by several magnitudes and are expressed at different levels. This difference in expression levels could contribute to the non-uniformity observed in read coverage data.
+But, in transcriptome assembly or RNA-seq data, the number of transcripts between genes or various isoforms of the same gene could vary by several magnitudes and are expressed at different levels. This difference in expression levels could contribute to the non-uniformity observed in read coverage data.
 
 There are two ways of performing transcriptome assembly:
 1. Reference guided assembly:  Reads are first mapped on the genome and the assembly task consists of solving which mapped reads correspond to which transcripts.
@@ -525,9 +525,9 @@ There are two ways of performing transcriptome assembly:
 
 We will be utilising the first step- Reference guided assembly. We will use StringTie to perform transcriptome assembly.
 
-StringTie2 is a fast assembler of RNA-Seq alignments into potential transcripts. As a reference guided assembler, it takes advantage of an existing genome to which the reads are aligned. It then builds splice graphs based on these alignments and uses the graphs to construct individual transcripts.
+StringTie2 is a fast assembler of RNA-Seq alignments into potential transcripts. As a reference-guided assembler, it takes advantage of an existing genome to which the reads are aligned. It then builds splice graphs based on these alignments and uses the graphs to construct individual transcripts.
 
-It also offers optional de novo assembly step to assemble and quantitate full-length transcripts representing multiple splice variants for each gene locus.
+It also offers an optional de novo assembly step to assemble and quantitate full-length transcripts representing multiple splice variants for each gene locus.
 
 You can download StringTie from https://ccb.jhu.edu/software/stringtie/index.shtml. Add it to your PATH.
 
@@ -535,7 +535,7 @@ Before we begin transcriptome assembly with StringTie2, we need to preprocess ou
 
 #### 4a. Converting SAM files to BAM files
 
-We have to convert SAM files to BAM files and sort them by coordinate before using them further. We will use SAMtools for this step. 
+We have to convert the SAM files to BAM files and sort them by coordinate before using them further. We will use SAMtools for this step. 
 
 SAM format is Sequence Alignment Map format that stores biological sequences that have been aligned to a reference sequence. The binary equivalent of SAM is BAM (Binary Alignment Map) which stores the same data in a binary representation to save space.
 
@@ -581,7 +581,7 @@ stringtie --merge -p 4 -G ./assembly/annotation/Homo_sapiens_chr.gtf -o ./assemb
 
 ```
 
-Again, you can rest the parameter 'p' to the number of processors in your PC. Also mergelist.txt file is a notepad file containing paths to every GTF file for each sample. It is provided in **the tutorial_data folder in the repository.**
+Again, you can reset the parameter 'p' to the number of processors in your PC. Also mergelist.txt file is a notepad file containing paths to every GTF file for each sample. It is provided in **the tutorial_data folder in the repository.**
 
 The output of this command id stringtie_merged.gtf file.
 
@@ -602,7 +602,7 @@ You can run this for each your samples or you can use the script samples_transcr
 
 #### 4e. Generating Count Tables for Genes and Transcript estimates
 
-Now we have the quantification folder ready for differential expression analysis. Since we will use DESeq2 for DGE analysis, we will use the prepDE.py3 (python 3 script) to generate count tables for genes and transcripts.
+Now, we have the quantification folder ready for differential expression analysis. Since we will use DESeq2 for DGE analysis, we will use the prepDE.py3 (python 3 script) to generate count tables for genes and transcripts.
 
 This script is provided by the Stringtie authors. You can download the prepDE.py3 file from https://ccb.jhu.edu/software/stringtie/dl/prepDE.py3
 

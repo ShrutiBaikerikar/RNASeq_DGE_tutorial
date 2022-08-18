@@ -43,7 +43,7 @@ It has several advantages over earlier technologies such as microarrays: high-th
 
 In the wet-lab procedures, RNA is isolated from freshly dissected or frozen cells or tissue samples. Quality control practices are integrated to check for degradation, purity and quantity.
 
-The quality-checked total RNA is used for library preparation where RNAs in the sample are converted to cDNA (complementary DNA) by reverse transcription. cDNAs are more stable and amenable to sequencing technology. The libraries are then to sequencing facilities where different sequencing protocols are used depending on the platform.
+The quality-checked total RNA is used for library preparation where RNAs in the sample are converted to cDNA (complementary DNA) by reverse transcription. cDNAs are more stable and amenable to sequencing technology. The libraries are then sent to sequencing facilities where different sequencing protocols are used depending on the platform.
 
 The result of sequencing is raw reads which are further analysed with bioinformatics and computational techniques. In the next section, we will go over the different steps involved in the computational aspect of RNA-Seq analysis. 
 
@@ -67,7 +67,7 @@ Not all analysis, ends with Differential Expression Analysis. Sometimes pre-proc
 ### What tools are will be using in this RNA Sequencing Analysis - Tutorial?
 
 For this tutorial, we will be using the following tools
-- Quality Control : FASTQC, RNA-SeQC
+- Quality Control : FASTQC
 - Pre-processing: Trimmomatic
 - Read Alignment: HISAT2
 - Transcriptome Assembly: StringTie
@@ -139,7 +139,7 @@ The R packages that will be required later on in the analysis can be installed u
 
 ### Setup your working directory <a name="work_directory"></a>
 
-In the image above, it is pretty obvious that RNA-SEQ DEG analysis consists of multiple steps involving different input and output inputs. Therefore it is very important to organize your data into separate folders, so that you don't get lost while working. :)
+In the image of RNA-seq DGE workflow we saw earlier, it is pretty obvious that the analysis consists of multiple steps involving different input and output inputs. Therefore it is very important to organize your data into separate folders, so that you don't get lost while working. :)
 
 Here is how you can organize your working directory structure:
 
@@ -507,7 +507,7 @@ hisat2 –p 4 -f –x ./alignment/index/genome -q -U ./alignment/input_reads/SRR
 
 ```
 
-You have to run this command for each sample by changing the sample names. Alternatively, you can use the samples_alignment.sh script present in **the scripts folder in the repository.** In this command -p refers to the number of processors; here I have used 4 since I have access to it, you can change this number depending on your PC configuration.
+You have to run this command for each sample by changing the sample names. Alternatively, you can use the samples_alignment.sh script present in **the scripts folder in the repository.** In this command -p refers to the number of processors; here I have used 4. You can change this number depending on your PC configuration.
 
 ---------------------------------------------------------------------
 

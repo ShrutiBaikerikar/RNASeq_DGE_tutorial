@@ -606,7 +606,7 @@ Now, we have the quantification folder ready for differential expression analysi
 
 This script is provided by the Stringtie authors. You can download the prepDE.py3 file from https://ccb.jhu.edu/software/stringtie/dl/prepDE.py3
 
-Next create a text file that contains the SAMPLE ID followed by <path to SAMPLE ID> and name it samples_lst.txt You can find this file in **the tutorial_data folder in the repository.**
+Next create a text file that contains the SAMPLE ID followed by path to SAMPLE ID and name it samples_lst.txt . You can find this file in **the tutorial_data folder in the repository.**
 
 Install python3 for Linux (if its not already installed). You can follow this guide https://docs.python-guide.org/starting/install3/linux/
 

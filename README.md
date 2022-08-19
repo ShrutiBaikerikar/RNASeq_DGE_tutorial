@@ -659,7 +659,7 @@ The authors of IsoformSwitchAnalyzeR highlight that StringTie provides its own g
 * In some cases, a novel transcript hasn't been provided a 'reference gene id' yet.
 * Some genes have been “merged” due to genomic overlap of transcripts from the different genes.
 
-IsoformSwitchAnalyzeR 's rescue algorithm ensures that 'MSTRG.XXXX' ids are replaced with 'reference gene ids' wherever annotation for the same is available. The result is that only novel genes, those are StringTie identified transcripts that do not overlap with any annotated genes, will still have 'MSTRG.XXXX' ids. 
+IsoformSwitchAnalyzeR 's rescue algorithm ensures that 'MSTRG.XXXX' ids are replaced with 'reference gene ids' wherever annotation for the same is available. The result is that only novel genes, those that are StringTie identified transcripts that do not overlap with any annotated genes, will still have 'MSTRG.XXXX' ids. 
 
 This helps save data from tens to thousands of genes and can be used for further downstream analysis.
 

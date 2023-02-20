@@ -381,7 +381,6 @@ These steps include:
    * *Trimming using a sliding window approach*: Instead of examining the quality of one base at a time, you can define a length of a search window and examine the mean quality of bases in that window. If the mean quality is above the given threshold, the window slides further to examine the next set of bases.</br>
 Sliding the window from the 5′ end keeps the beginning of the read until the quality falls below the defined threshold while sliding from the 3′ end cuts until it reaches a window with good enough quality. 
 The window size is an essential parameter that needs to be tuned; a very small window size may lead to a stringent check and lead to loss of reads.
-   * *Trimming by sum method*: This is also known as BWA quality trimming. The read is scanned from the 3’ end, the quality of each base is compared to the user-defined threshold and the difference is summed up. The read is trimmed at the point where the ‘summed up difference’ is the highest.
 * **Removal of Ambiguous Bases**: If a base is not identified during sequencing, it is indicated as an N. Higher number of Ns in the read should be removed to avoid false mapping and incorrect transcriptome assemblies.
 * **Removal of Adapters**: Adapters are short, known sequences of oligonucleotides that are used to extract or fish out DNA sequences of interest. Other tags such as primers and multiplexing identifiers may also be attached to the reads.
 These need to be removed before further analysis. However, the removal of adapter content can present several hurdles.</br>

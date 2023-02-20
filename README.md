@@ -223,26 +223,7 @@ Written 27218187 spots for SRR12852623
 
 ```
 
-You should run the same commands for each of the samples. I have enlisted the commands below, but you have to wait after running each command for the output and then enter the next.
-
-```bash
-
-prefetch SRR12852624
-fastq-dump SRR12852624
-
-prefetch SRR12852625
-fastq-dump SRR12852625
-
-prefetch SRR12852626
-fastq-dump SRR12852626
-
-prefetch SRR12852627
-fastq-dump SRR12852627
-
-prefetch SRR12852628
-fastq-dump SRR12852628
-
-```
+You should run the same commands for each of the samples.
 ---------------------------------------------------------------------------------
 
 ## Differential Gene Expression Analysis from RNA Sequencing Data - Workflow <a name="workflow"></a>

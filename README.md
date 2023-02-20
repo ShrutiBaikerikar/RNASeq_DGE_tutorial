@@ -41,9 +41,9 @@ It provides access to the transcriptome – a complete set of transcripts presen
 
 It has several advantages over earlier technologies such as microarrays: high-throughput, increased sensitivity that provides minute details of transcriptional features and detection of novel transcripts, gene models, and small noncoding RNA species.
 
-In the wet-lab procedures, RNA is isolated from freshly dissected or frozen cells or tissue samples. Quality control practices are integrated to check for degradation, purity and quantity.
+In the wet-lab procedures, RNA is isolated from freshly dissected or frozen cells or tissue samples. Quality control practices are carried out to check for degradation, purity and quantity.
 
-The quality-checked total RNA is used for library preparation where RNAs in the sample are converted to cDNA (complementary DNA) by reverse transcription. cDNAs are more stable and amenable to sequencing technology. The libraries are then sent to sequencing facilities where different sequencing protocols are used depending on the platform.
+The quality-checked total RNA is used for library preparation where RNAs in the sample are converted to cDNA (complementary DNA) by reverse transcription. cDNAs are more stable and amenable to sequencing technology. The libraries are then sent for sequencing.
 
 The result of sequencing is raw reads which are further analysed with bioinformatics and computational techniques. In the next section, we will go over the different steps involved in the computational aspect of RNA-Seq analysis. 
 

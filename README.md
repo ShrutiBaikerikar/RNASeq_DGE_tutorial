@@ -524,7 +524,7 @@ samtools sort -@ 4 -o ./assembly/sorted_bam_reads/SRR12852623_sorted.bam ./align
 
 ```
 
-Run this for each sample by replacing the sample name or you can use the script samples_sortbam.sh from **the scripts folder in the repository.** Here -@ refers to the number of processers and you can change that as per your PC configuration.
+Run this for each sample by replacing the sample name or you can use the script samples_sortbam.sh from **the scripts folder in the repository.** Here -@ refers to the number of processers.
 
 
 #### 4b. Reference-Guided Transcript Assembly
@@ -556,7 +556,7 @@ stringtie --merge -p 4 -G ./assembly/annotation/Homo_sapiens_chr.gtf -o ./assemb
 
 ```
 
-Again, you can reset the parameter 'p' to the number of processors in your PC. Also mergelist.txt file is a notepad file containing paths to every GTF file for each sample. It is provided in **the tutorial_data folder in the repository.**
+Also mergelist.txt file is a notepad file containing paths to every GTF file for each sample. It is provided in **the tutorial_data folder in the repository.**
 
 The output of this command id stringtie_merged.gtf file.
 

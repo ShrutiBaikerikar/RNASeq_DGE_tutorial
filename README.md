@@ -460,7 +460,7 @@ The basic approach of the aligners is ‘seed and extend’ which involves:
 1. identifying segments of reads of defined lengths (seeds) that precisely map to a given location in the genome. Seed matches can be exact or tolerate mismatches.
 2. extend the reads in both directions to map the rest of the read or maximum mappable length
 
-HISAT2 maps the longer part of the read that maps to the genome contiguously using the global index. Once this is mapped, it helps to identify the relevant local index.  HISAT2 can usually align the remaining part of the read within a single local index rather than searching across the whole genome.
+HISAT2 maps the longer part of the read to the genome contiguously using the global index. Once this is mapped, it helps to identify the relevant local index.  HISAT2 can usually align the remaining part of the read within a single local index rather than searching across the whole genome.
 
 You can download and install HISAT2 from http://daehwankimlab.github.io/hisat2/download/ . Additionally, download the reference genome index (H.sapiens GRCh38 genome) given by HISAT2 developers to save time.
 

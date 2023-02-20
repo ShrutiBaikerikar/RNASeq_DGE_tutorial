@@ -237,11 +237,11 @@ Lets's begin our analysis with quality control of our raw RNA-Seq reads.
 ### 1. Quality Control of RNA-Seq Samples <a name="quality_control"></a>
 
 Quality-related issues generally arise during sequencing or library preparation. These include: low confidence bases, PCR artifacts, sequence-specific bias, sequence contamination, untrimmed adapters, 3’/5’ positional bias.
-Running quality checks can help avoid problems that would occur during genome alignment. Few quality-related problems can be corrected. Some cannot be corrected, but being aware of them can help us interpret results cautiously.
+Running quality checks can help avoid problems that would occur during genome alignment. 
 
 FASTQC is a Java program that performs multiple quality checks on tens of millions of reads in a few minutes. It reports and helps visualize information on base content and quality, k-mer content, presence of ambiguous bases, overrepresented sequences, duplicates etc.
 
-Add FASTQC to your path, if not yet added to the configuration file. Navigate to your working directory: rna_seq_dge_analysis and then run this command.
+Add FASTQC to your path. Navigate to your working directory: rna_seq_dge_analysis and then run this command.
 
 The following command produces a quality report for a single sample:
 

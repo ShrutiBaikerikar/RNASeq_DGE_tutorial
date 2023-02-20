@@ -318,11 +318,6 @@ The per base sequence plot reports the percent of bases called at each position 
 
 This is acceptable for RNA-Sequencing; a non-uniform distribution for the first 10-15 bases of the read. This is due to random hexamer priming that is utilised in RNA-Sequencing library preparation.
 
-Random hexamer primers are a mix of oligonucleotides representing hexamer sequences that are attached to the single stranded RNA for extension by reverse transcription. 
-
-While this process is intended to be random, multiple studies have shown that random hexamer priming introduces a bias in the nucleotide composition at the start of the reads.
-This affects the expression estimates of genes and isoforms. Also, the resulting sequence coverage of the transcripts is not uniform.
-
 In most cases, this does not affect downstream analyses.
 <p> </br> </p>
 <p align="center">
@@ -366,7 +361,7 @@ In RNA-Sequencing, duplicates are often a natural consequence of sequencing high
 
 The ‘Overrepresented Sequence Plot’ lists all of the sequence which make up more than 0.1% of the total. 
 
-Theoretically, a normal-high throughput library would have a diverse set of sequences; no individual sequence would account for a high fraction of the whole. However, if the sample does contain overrepresented sequences, it could mean that the plot is highly biologically significant or the library is contaminated or it has a bias.
+Theoretically, a normal-high throughput library would have a diverse set of sequences; no individual sequence would account for a high fraction of the whole. However, if the sample does contain overrepresented sequences, it could mean that the sequence is highly biologically significant or the library is contaminated or it has a bias.
 
 The overrepresented sequences could be vector or adapter sequences. One can BLAST the sequence to determine the identity.
 

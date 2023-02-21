@@ -600,7 +600,7 @@ This will generate two files gene_count_matrix.csv and transcript_count_matrix.c
 ### 5. Reestimating Gene Counts from Assembled RNA-Seq reads <a name="gene_counts"></a>
 
 We have assembled our RNA-Seq alignment into potential transcripts and we have also generated read count tables at both gene and transcript levels.
-The files are gene_counts.csv and transcript_counts.csv.
+The files are gene_count_matrix.csv and transcript_count_matrix.csv.
 
 We ***WOULD*** (actually, we aren't) be using the gene_count_matrix.csv file for differential gene expression analysis. A closer look at the contents of gene_count_matrix.csv file reveals that we have 79,000+ entries.
 

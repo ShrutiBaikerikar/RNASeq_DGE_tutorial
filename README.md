@@ -1,6 +1,6 @@
 # RNA-SEQ Differential Gene Expression Analysis of COVID-19 Infected Pancreas Cells
 
-This repository comprises a general workflow for Differential Gene Expression using RNA Sequencing data. 
+This repository comprises a general workflow for Differential Gene Expression using RNA Sequencing data using HISAT2 and DeSeq2. 
 
 The dataset used in this workflow is GSE159717 (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE159717) which can be downloaded from Gene Expression Omnibus (GEO). 
 
